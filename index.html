@@ -1185,6 +1185,7 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
   </div>
 
   <div class="conge-bar">
@@ -1551,7 +1552,8 @@ function importCSV() {
 
 // ===== EXPORT =====
 function exportData() {
-  const rows = [['Nom', 'Matricule', 'Grade', 'Poste', 'Jours Accumulés', 'Repos Pris', 'Solde']];
+  // Export cuisiniers summary as CSV
+  const rows = [['Nom', 'Matricule', 'Grade', 'Poste', 'Jours Accumules', 'Repos Pris', 'Solde']];
   state.cuisiniers.forEach(c => {
     rows.push([c.nom, c.matricule, c.grade, c.poste||'', totalJours(c), reposPris(c), Math.max(0, totalJours(c)-reposPris(c))]);
   });
@@ -1560,6 +1562,67 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'chefplanning_export.csv'; a.click();
+}
+
+function exportPlanningExcel() {
+  // Build CSV in planning Excel format
+  const days = Array.from({length:7}, (_,i) => addDays(state.planWeekStart, i));
+  const dayNames = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMANCHE'];
+
+  const lines = [];
+  // Header info
+  lines.push(['Departement','Direction des Ressources Humaines','','','','','','','','']);
+  lines.push(['Service:','CUISINE "Oasis"','','','','','','','','']);
+  lines.push(['Semaine:',fmtDate(days[0]),'','','','','','','','']);
+  lines.push(['','',fmtDate(days[6]),'','','','','','','']);
+  lines.push([]);
+  lines.push([]);
+
+  // Day headers row
+  const headerRow = ['MATRICULE','NOM PRENOM','','GRADE'];
+  days.forEach((d,i) => {
+    headerRow.push(`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`);
+  });
+  lines.push(headerRow);
+
+  const dayNamesRow = ['','','',''];
+  days.forEach((_,i) => dayNamesRow.push(dayNames[i]));
+  lines.push(dayNamesRow);
+
+  // Group by section
+  const secMap = {};
+  state.cuisiniers.forEach(c => {
+    const sec = c.poste || 'Autres';
+    if (!secMap[sec]) secMap[sec] = [];
+    secMap[sec].push(c);
+  });
+
+  let firstSec = true;
+  Object.entries(secMap).forEach(([secName, emps]) => {
+    emps.forEach((emp, ei) => {
+      const row = [
+        emp.matricule || '',
+        emp.nom,
+        ei === 0 ? secName : '',
+        emp.grade
+      ];
+      days.forEach((_,di) => {
+        const sh = getPlanShift(emp.id, di);
+        row.push(sh ? sh.value : '');
+      });
+      lines.push(row);
+    });
+  });
+
+  // Convert to CSV with BOM for Excel
+  const csv = lines.map(r => r.map(v => `"${(v||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const weekStr = fmtDate(state.planWeekStart).replace(/\//g,'-');
+  a.href = url;
+  a.download = `Planning_Cuisine_${weekStr}.csv`;
+  a.click();
 }
 
 // ===== CLICK OUTSIDE =====
