@@ -2,10 +2,6 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<!-- ChefPlanning v20260627_161147 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChefPlanning — Jours Fériés</title>
 <meta name="theme-color" content="#1A0533">
@@ -683,6 +679,31 @@
       </div>
     </div>
     <input type="hidden" id="editId">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">
+        Solde initial (à l'arrivée)
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Jours Fériés</label>
+          <input type="number" id="cInitFerie" min="0" step="0.5" value="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Congés</label>
+          <input type="number" id="cInitConge" min="0" step="0.5" value="0" placeholder="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Double Shifts</label>
+          <input type="number" id="cInitDouble" min="0" step="0.5" value="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Repos Suspendus</label>
+          <input type="number" id="cInitRepos" min="0" step="0.5" value="0" placeholder="0">
+        </div>
+      </div>
+    </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('cuisinierModal')">Annuler</button>
       <button class="btn-save" onclick="saveCuisinier()">💾 Enregistrer</button>
@@ -792,14 +813,6 @@
 </div>
 
 <script>
-
-// Force reset if old version
-const APP_VERSION = '20260627_161147';
-if (localStorage.getItem('cp_version') !== APP_VERSION) {
-  localStorage.removeItem('chefplanning');
-  localStorage.setItem('cp_version', APP_VERSION);
-}
-
 // ===== PLANNING HELPERS (defined first) =====
 function getMonday(d) {
   const dt = new Date(d);
@@ -1371,6 +1384,10 @@ function openAddModal() {
   document.getElementById('cGrade').value = 'Cuisinier';
   document.getElementById('cPoste').value = '';
   document.getElementById('editId').value = '';
+  document.getElementById('cInitFerie').value = 0;
+  document.getElementById('cInitConge').value = 0;
+  document.getElementById('cInitDouble').value = 0;
+  document.getElementById('cInitRepos').value = 0;
   document.getElementById('cuisinierModal').classList.add('open');
 }
 
@@ -1383,6 +1400,11 @@ function openEditModal(id) {
   document.getElementById('cGrade').value = c.grade;
   document.getElementById('cPoste').value = c.poste || '';
   document.getElementById('editId').value = id;
+  const initEvs = (c.events || []).filter(e => e.source === 'init');
+  document.getElementById('cInitFerie').value = initEvs.filter(e=>e.type==='ferie').reduce((s,e)=>s+e.jours,0) || 0;
+  document.getElementById('cInitConge').value = initEvs.filter(e=>e.type==='repos-pris').reduce((s,e)=>s+e.jours,0) || 0;
+  document.getElementById('cInitDouble').value = initEvs.filter(e=>e.type==='double').reduce((s,e)=>s+e.jours,0) || 0;
+  document.getElementById('cInitRepos').value = initEvs.filter(e=>e.type==='repos').reduce((s,e)=>s+e.jours,0) || 0;
   document.getElementById('cuisinierModal').classList.add('open');
 }
 
@@ -1392,14 +1414,31 @@ function saveCuisinier() {
   const grade = document.getElementById('cGrade').value;
   const poste = document.getElementById('cPoste').value.trim();
   const editId = document.getElementById('editId').value;
+  const initFerie = parseFloat(document.getElementById('cInitFerie').value) || 0;
+  const initConge = parseFloat(document.getElementById('cInitConge').value) || 0;
+  const initDouble = parseFloat(document.getElementById('cInitDouble').value) || 0;
+  const initRepos = parseFloat(document.getElementById('cInitRepos').value) || 0;
 
   if (!nom || !matricule) { alert('Nom et Matricule requis !'); return; }
 
   if (editId) {
     const c = state.cuisiniers.find(x => x.id === editId);
-    if (c) { c.nom = nom; c.matricule = matricule; c.grade = grade; c.poste = poste; }
+    if (c) {
+      c.nom = nom; c.matricule = matricule; c.grade = grade; c.poste = poste;
+      // Update initial balance events
+      c.events = (c.events || []).filter(e => e.source !== 'init');
+      if (initFerie > 0) c.events.unshift({ id: uid(), type: 'ferie', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Jours Fériés', jours: initFerie, source: 'init' });
+      if (initConge > 0) c.events.unshift({ id: uid(), type: 'repos-pris', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Congés', jours: initConge, source: 'init' });
+      if (initDouble > 0) c.events.unshift({ id: uid(), type: 'double', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Double Shifts', jours: initDouble, source: 'init' });
+      if (initRepos > 0) c.events.unshift({ id: uid(), type: 'repos', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Repos Suspendus', jours: initRepos, source: 'init' });
+    }
   } else {
-    state.cuisiniers.push({ id: uid(), nom, matricule, grade, poste, events: [] });
+    const events = [];
+    if (initFerie > 0) events.push({ id: uid(), type: 'ferie', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Jours Fériés', jours: initFerie, source: 'init' });
+    if (initConge > 0) events.push({ id: uid(), type: 'repos-pris', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Congés', jours: initConge, source: 'init' });
+    if (initDouble > 0) events.push({ id: uid(), type: 'double', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Double Shifts', jours: initDouble, source: 'init' });
+    if (initRepos > 0) events.push({ id: uid(), type: 'repos', date: '2026-01-01', dateFin: '2026-01-01', desc: 'Solde initial — Repos Suspendus', jours: initRepos, source: 'init' });
+    state.cuisiniers.push({ id: uid(), nom, matricule, grade, poste, events });
   }
 
   save();
