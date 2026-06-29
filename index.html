@@ -544,6 +544,8 @@
   .ci-coupure { background: #0a1a2a; color: #60A5FA; }
   .ci-conge { background: #0a2a1a; color: #34D399; border: 1px solid #0a3a2a; }
   .ci-ferie { background: #1a1200; color: #C8A800; border: 1px solid #2a1e00; }
+  .ci-maladie { background: #1a0a0a; color: #F87171; border: 1px solid #2a1010; }
+  .ci-at { background: #1a0e00; color: #FB923C; border: 1px solid #2a1800; }
   .cell-note { font-size: 8px; opacity: 0.8; margin-top: 1px; }
 
   /* Section separator in planning */
@@ -807,6 +809,8 @@
         <div class="prs-btn p-double" onclick="applyPlanPreset('DOUBLE')">🟣 Double</div>
         <div class="prs-btn p-conge" onclick="applyPlanPreset('CONGÉ')">🟢 Congé</div>
         <div class="prs-btn p-ferie" onclick="applyPlanPreset('J.FÉRIÉ')">🌟 J.Férié</div>
+        <div class="prs-btn" style="color:#F87171" onclick="applyPlanPreset('MALADIE')">🤒 Maladie</div>
+        <div class="prs-btn" style="color:#FB923C" onclick="applyPlanPreset('AT')">🦺 Acc.Travail</div>
         <div class="prs-btn" onclick="applyPlanPreset('')" style="color:var(--red)">✕ Effacer</div>
       </div>
     </div>
@@ -1152,6 +1156,8 @@ function cellClass(val) {
   if (v === 'COUPURE') return 'ci-coupure';
   if (v.includes('CONGÉ') || v.includes('CONGE')) return 'ci-conge';
   if (v.includes('J.FÉRIÉ') || v.includes('FERIE') || v.includes('FÉRIÉ')) return 'ci-ferie';
+  if (v === 'MALADIE') return 'ci-maladie';
+  if (v === 'AT' || v === 'ACC.TRAVAIL') return 'ci-at';
   return 'ci-normal';
 }
 
