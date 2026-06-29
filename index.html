@@ -617,6 +617,7 @@
   }
   .conge-dot { width: 8px; height: 8px; border-radius: 50%; }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -1585,64 +1586,182 @@ function exportData() {
 }
 
 function exportPlanningExcel() {
-  // Build CSV in planning Excel format
+  if (typeof XLSX === 'undefined') { alert('Chargement en cours, réessayez dans 2 secondes.'); return; }
+  
   const days = Array.from({length:7}, (_,i) => addDays(state.planWeekStart, i));
   const dayNames = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMANCHE'];
-
-  const lines = [];
-  // Header info
-  lines.push(['Departement','Direction des Ressources Humaines','','','','','','','','']);
-  lines.push(['Service:','CUISINE "Oasis"','','','','','','','','']);
-  lines.push(['Semaine:',fmtDate(days[0]),'','','','','','','','']);
-  lines.push(['','',fmtDate(days[6]),'','','','','','','']);
-  lines.push([]);
-  lines.push([]);
-
-  // Day headers row
-  const headerRow = ['MATRICULE','NOM PRENOM','','GRADE'];
+  const wb = XLSX.utils.book_new();
+  const ws = {};
+  const merges = [];
+  
+  // Colors
+  const C = {
+    header:  { fgColor: { rgb: '1A0533' } },
+    dayHdr:  { fgColor: { rgb: '2D0A4E' } },
+    section: { fgColor: { rgb: '2D0A4E' } },
+    off:     { fgColor: { rgb: '3D0A0A' } },
+    recup:   { fgColor: { rgb: '3D2A00' } },
+    normal:  { fgColor: { rgb: '1A0533' } },
+    odd:     { fgColor: { rgb: '200840' } },
+    even:    { fgColor: { rgb: '160630' } },
+    at:      { fgColor: { rgb: '2A1000' } },
+    maladie: { fgColor: { rgb: '2A0808' } },
+    depart:  { fgColor: { rgb: '0A1A2A' } },
+  };
+  
+  const boldWhite = { bold: true, color: { rgb: 'F0EAF8' }, sz: 10, name: 'Arial' };
+  const boldGold  = { bold: true, color: { rgb: 'C8A800' }, sz: 10, name: 'Arial' };
+  const boldRed   = { bold: true, color: { rgb: 'EF4444' }, sz: 10, name: 'Arial' };
+  const boldYellow= { bold: true, color: { rgb: 'F59E0B' }, sz: 10, name: 'Arial' };
+  const boldBlue  = { bold: true, color: { rgb: '818CF8' }, sz: 10, name: 'Arial' };
+  const boldGreen = { bold: true, color: { rgb: '34D399' }, sz: 10, name: 'Arial' };
+  const boldOrange= { bold: true, color: { rgb: 'FB923C' }, sz: 10, name: 'Arial' };
+  const boldPink  = { bold: true, color: { rgb: 'F87171' }, sz: 10, name: 'Arial' };
+  const normalGray= { color: { rgb: '9080A8' }, sz: 9, name: 'Arial' };
+  
+  function cell(v, font, fill, align) {
+    return { v: v||'', t:'s', s: {
+      font: font || { color:{rgb:'F0EAF8'}, sz:9, name:'Arial' },
+      fill: fill ? { patternType:'solid', ...fill } : { patternType:'solid', fgColor:{rgb:'160630'} },
+      alignment: { horizontal: align||'center', vertical:'center', wrapText:false },
+      border: {
+        top:    { style:'thin', color:{rgb:'3A1560'} },
+        bottom: { style:'thin', color:{rgb:'3A1560'} },
+        left:   { style:'thin', color:{rgb:'3A1560'} },
+        right:  { style:'thin', color:{rgb:'3A1560'} },
+      }
+    }};
+  }
+  
+  function shiftFont(val) {
+    if (!val) return { color:{rgb:'4A3060'}, sz:9, name:'Arial' };
+    const v = val.toUpperCase();
+    if (v === 'OFF') return boldRed;
+    if (v.includes('RECUP') || v.includes('RÉCUP')) return boldYellow;
+    if (v === 'DOUBLE') return boldBlue;
+    if (v.includes('CONGE') || v.includes('CONGÉ')) return boldGreen;
+    if (v.includes('FERIE') || v.includes('FÉRIÉ')) return boldGold;
+    if (v === 'AT') return boldOrange;
+    if (v === 'MALADIE') return boldPink;
+    if (v === 'DEPART' || v === 'DÉPART') return { color:{rgb:'60A5FA'}, sz:9, name:'Arial' };
+    return boldWhite;
+  }
+  
+  function shiftFill(val) {
+    if (!val) return C.even;
+    const v = val.toUpperCase();
+    if (v === 'OFF') return C.off;
+    if (v.includes('RECUP') || v.includes('RÉCUP')) return C.recup;
+    if (v === 'AT') return C.at;
+    if (v === 'MALADIE') return C.maladie;
+    if (v === 'DEPART' || v === 'DÉPART') return C.depart;
+    return null;
+  }
+  
+  let R = 0;
+  function setCell(c, r, v, font, fill, align) {
+    const addr = XLSX.utils.encode_cell({c, r});
+    ws[addr] = cell(v, font, fill, align);
+  }
+  
+  // Row 0: Departement
+  setCell(0, R, 'Departement', boldGold, C.header, 'left');
+  setCell(1, R, 'Direction des Ressources Humaines', boldWhite, C.header, 'left');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, C.header);
+  // Title center merge
+  setCell(4, R, 'Cuisine', {bold:true, color:{rgb:'F0EAF8'}, sz:16, name:'Arial'}, {fgColor:{rgb:'000000'}}, 'center');
+  merges.push({s:{r:R,c:4},e:{r:R,c:10}});
+  R++;
+  
+  // Row 1: Service
+  setCell(0, R, 'Service:', boldGold, C.header, 'left');
+  setCell(1, R, 'CUISINE "Oasis"', boldWhite, C.header, 'left');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, {fgColor:{rgb:'000000'}});
+  R++;
+  
+  // Row 2: Semaine
+  setCell(0, R, 'Semaine:', boldGold, C.header, 'left');
+  setCell(1, R, fmtDate(days[0]), boldWhite, C.header, 'left');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, {fgColor:{rgb:'000000'}});
+  R++;
+  setCell(0, R, '', null, C.header);
+  setCell(1, R, fmtDate(days[6]), boldWhite, C.header, 'left');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, {fgColor:{rgb:'000000'}});
+  R++;
+  
+  // Empty rows
+  for(let c=0;c<11;c++) setCell(c, R, '', null, {fgColor:{rgb:'0F0220'}});
+  R++;
+  for(let c=0;c<11;c++) setCell(c, R, '', null, {fgColor:{rgb:'0F0220'}});
+  R++;
+  
+  // Column headers - dates
+  setCell(0, R, 'MATRICULE', boldGold, C.dayHdr, 'center');
+  setCell(1, R, 'NOM PRENOM', boldGold, C.dayHdr, 'left');
+  setCell(2, R, '', null, C.dayHdr);
+  setCell(3, R, 'GRADE', boldGold, C.dayHdr, 'left');
   days.forEach((d,i) => {
-    headerRow.push(`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`);
+    const dateStr = d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();
+    setCell(4+i, R, dateStr, boldGold, C.dayHdr, 'center');
   });
-  lines.push(headerRow);
-
-  const dayNamesRow = ['','','',''];
-  days.forEach((_,i) => dayNamesRow.push(dayNames[i]));
-  lines.push(dayNamesRow);
-
-  // Group by section
+  R++;
+  
+  // Day names
+  setCell(0, R, '', null, C.dayHdr);
+  setCell(1, R, '', null, C.dayHdr);
+  setCell(2, R, '', null, C.dayHdr);
+  setCell(3, R, '', null, C.dayHdr);
+  dayNames.forEach((dn,i) => setCell(4+i, R, dn, boldWhite, C.dayHdr, 'center'));
+  R++;
+  
+  // Data rows grouped by section
   const secMap = {};
   state.cuisiniers.forEach(c => {
     const sec = c.poste || 'Autres';
     if (!secMap[sec]) secMap[sec] = [];
     secMap[sec].push(c);
   });
-
-  let firstSec = true;
+  
+  let rowIdx = 0;
   Object.entries(secMap).forEach(([secName, emps]) => {
     emps.forEach((emp, ei) => {
-      const row = [
-        emp.matricule || '',
-        emp.nom,
-        ei === 0 ? secName : '',
-        emp.grade
-      ];
+      const fill = rowIdx%2===0 ? C.even : C.odd;
+      setCell(0, R, emp.matricule||'', normalGray, fill, 'center');
+      setCell(1, R, emp.nom, {bold:true, color:{rgb:'F0EAF8'}, sz:10, name:'Arial'}, fill, 'left');
+      setCell(2, R, ei===0 ? secName : '', {bold:true, color:{rgb:'C8A800'}, sz:9, name:'Arial'}, fill, 'left');
+      setCell(3, R, emp.grade, normalGray, fill, 'left');
       days.forEach((_,di) => {
         const sh = getPlanShift(emp.id, di);
-        row.push(sh ? sh.value : '');
+        const val = sh ? sh.value : '';
+        const sf = shiftFill(val);
+        setCell(4+di, R, val, shiftFont(val), sf || fill, 'center');
       });
-      lines.push(row);
+      R++; rowIdx++;
     });
   });
-
-  // Convert to CSV with BOM for Excel
-  const csv = lines.map(r => r.map(v => `"${(v||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const weekStr = fmtDate(state.planWeekStart).replace(/\//g,'-');
-  a.href = url;
-  a.download = `Planning_Cuisine_${weekStr}.csv`;
-  a.click();
+  
+  // Summary rows
+  R++;
+  setCell(0, R, 'EFFECTIF CUISINE', boldGold, C.header, 'left');
+  setCell(1, R, String(state.cuisiniers.length), boldWhite, C.header, 'center');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, C.header);
+  R++;
+  setCell(0, R, 'TOTAL', boldGold, C.header, 'left');
+  setCell(1, R, String(state.cuisiniers.length), boldWhite, C.header, 'center');
+  for(let c=2;c<11;c++) setCell(c, R, '', null, C.header);
+  
+  ws['!ref'] = XLSX.utils.encode_range({s:{r:0,c:0}, e:{r:R,c:10}});
+  ws['!merges'] = merges;
+  ws['!cols'] = [
+    {wch:10},{wch:22},{wch:14},{wch:22},
+    {wch:13},{wch:13},{wch:13},{wch:13},{wch:13},{wch:13},{wch:13}
+  ];
+  ws['!rows'] = Array(R+1).fill({hpt:18});
+  
+  XLSX.utils.book_append_sheet(wb, ws, 'CUISINE');
+  
+  const weekStr = days[0].getDate().toString().padStart(2,'0')+'-'+(days[0].getMonth()+1).toString().padStart(2,'0')+'-'+days[0].getFullYear();
+  XLSX.writeFile(wb, `Planning_Cuisine_${weekStr}.xlsx`);
 }
 
 // ===== CLICK OUTSIDE =====
