@@ -873,8 +873,7 @@ const JOURS_FERIES_2025 = [
   { date: '2025-04-23', nom: 'Aïd Al Adha', type: 'rel' },
   { date: '2025-05-01', nom: 'Fête du Travail', type: 'nat' },
   { date: '2025-05-14', nom: 'Nouvel An Hégire (Ras Assana)', type: 'rel' },
-  { date: '2025-07-23', nom: 'Fête du Trône', type: 'nat' },
-  { date: '2025-07-30', nom: 'Fête de l\'Allégeance (Oued Eddahab)', type: 'nat' },
+  { date: '2025-07-30', nom: 'Fête du Trône', type: 'nat' },
   { date: '2025-08-14', nom: 'Anniversaire de la Récupération de l\'Oued Eddahab', type: 'nat' },
   { date: '2025-08-20', nom: 'Fête de la Révolution', type: 'nat' },
   { date: '2025-08-21', nom: 'Fête de la Jeunesse', type: 'nat' },
@@ -888,8 +887,7 @@ const JOURS_FERIES_2026 = [
   { date: '2026-01-11', nom: 'Manifeste de l\'Indépendance', type: 'nat' },
   { date: '2026-03-20', nom: 'Aïd Al Fitr', type: 'rel' },
   { date: '2026-05-01', nom: 'Fête du Travail', type: 'nat' },
-  { date: '2026-07-23', nom: 'Fête du Trône', type: 'nat' },
-  { date: '2026-07-30', nom: 'Fête de l\'Allégeance', type: 'nat' },
+  { date: '2026-07-30', nom: 'Fête du Trône', type: 'nat' },
   { date: '2026-08-14', nom: 'Récupération de l\'Oued Eddahab', type: 'nat' },
   { date: '2026-08-20', nom: 'Fête de la Révolution', type: 'nat' },
   { date: '2026-08-21', nom: 'Fête de la Jeunesse', type: 'nat' },
@@ -1205,7 +1203,7 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
-    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">📥 Excel</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
   </div>
 
   <div class="conge-bar">
@@ -1683,9 +1681,10 @@ function exportPlanningExcel() {
   const a = document.createElement('a');
   a.href = url;
   a.download = 'Planning_Cuisine_' + weekStr + '.xls';
+  a.target = '_blank';
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 2000);
 }
 
 // ===== CLICK OUTSIDE =====
