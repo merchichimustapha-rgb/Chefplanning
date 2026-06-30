@@ -1676,15 +1676,16 @@ function exportPlanningExcel() {
 <body>${tbl}</body></html>`;
   
   const weekStr = days[0].getDate().toString().padStart(2,'0')+'-'+(days[0].getMonth()+1).toString().padStart(2,'0')+'-'+days[0].getFullYear();
-  const blob = new Blob([html], {type: 'application/vnd.ms-excel;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
+  // Use data URI - works on Android Chrome
+  const b64 = btoa(unescape(encodeURIComponent(html)));
+  const dataUri = 'data:application/vnd.ms-excel;base64,' + b64;
   const a = document.createElement('a');
-  a.href = url;
+  a.href = dataUri;
   a.download = 'Planning_Cuisine_' + weekStr + '.xls';
   a.target = '_blank';
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 2000);
+  setTimeout(() => document.body.removeChild(a), 2000);
 }
 
 // ===== CLICK OUTSIDE =====
