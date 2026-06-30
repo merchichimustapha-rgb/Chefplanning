@@ -1659,18 +1659,7 @@ function exportPlanningExcel() {
   </tr>`;
   tbl += '</table>';
   
-  // Wrap in Excel-compatible HTML
-  const xlsContent = `<?xml version="1.0" encoding="UTF-8"?>
-<?mso-application progid="Excel.Sheet"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
-  xmlns:x="urn:schemas-microsoft-com:office:excel">
-  <Worksheet ss:Name="CUISINE">
-    <Table>${buildXMLRows(days, dayNames)}</Table>
-  </Worksheet>
-</Workbook>`;
-
-  // Use simpler HTML approach that Excel opens
+  // Use HTML approach that Excel opens
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
 <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>CUISINE</x:Name></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
 <body>${tbl}</body></html>`;
@@ -1776,13 +1765,10 @@ function exportPlanningExcel() {
 <div class="summary">EFFECTIF CUISINE : <strong>${state.cuisiniers.length}</strong></div>
 </div></body></html>`;
 
-  const win = window.open('', '_blank');
-  if (win) {
-    win.document.write(fullHtml);
-    win.document.close();
-  } else {
-    alert('Activez les popups dans Chrome pour utiliser cette fonction.');
-  }
+  // Open in same window - works on all Android browsers
+  const encoded = encodeURIComponent(fullHtml);
+  const dataUrl = 'data:text/html;charset=utf-8,' + encoded;
+  window.location.href = dataUrl;
 }
 
 // ===== CLICK OUTSIDE =====
