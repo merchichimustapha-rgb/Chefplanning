@@ -870,7 +870,6 @@ let state = {
 };
 
 const JOURS_FERIES_2025 = [
-  { date: '2025-01-01', nom: 'Nouvel An', type: 'nat' },
   { date: '2025-01-11', nom: 'Manifeste de l\'Indépendance', type: 'nat' },
   { date: '2025-03-30', nom: 'Aïd Al Fitr', type: 'rel' },
   { date: '2025-04-23', nom: 'Aïd Al Adha', type: 'rel' },
@@ -886,7 +885,6 @@ const JOURS_FERIES_2025 = [
 ];
 
 const JOURS_FERIES_2026 = [
-  { date: '2026-01-01', nom: 'Nouvel An', type: 'nat' },
   { date: '2026-01-11', nom: 'Manifeste de l\'Indépendance', type: 'nat' },
   { date: '2026-03-20', nom: 'Aïd Al Fitr', type: 'rel' },
   { date: '2026-05-01', nom: 'Fête du Travail', type: 'nat' },
@@ -1206,7 +1204,7 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
-    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">🖨️ Partager</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
   </div>
 
   <div class="conge-bar">
@@ -1585,6 +1583,8 @@ function exportData() {
   a.href = url; a.download = 'chefplanning_export.csv'; a.click();
 }
 
+function closePlanOverlay() { var o = document.getElementById("planOverlay"); if(o) o.style.display="none"; }
+
 function exportPlanningExcel() {
   const days = Array.from({length:7}, (_,i) => addDays(state.planWeekStart, i));
   const DAY_NAMES = ['LUN','MAR','MER','JEU','VEN','SAM','DIM'];
@@ -1662,7 +1662,8 @@ thead th { background: #1A0533; color: #C8A800; padding: 5px 4px; border: 1px so
 <body>
 <div class="btn-bar">
   <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
-  <button class="btn btn-close" onclick="document.getElementById('planOverlay').style.display='none'">✕ Fermer</button>
+  <button class="btn" style="background:#22C55E;color:#fff" onclick="window.print()">📥 Télécharger PDF</button>
+  <button class="btn btn-close\" onclick=\"closePlanOverlay()\">✕ Fermer</button>
 </div>
 <div class="header">
   <h2>CUISINE "Oasis" — Planning Hebdomadaire</h2>
