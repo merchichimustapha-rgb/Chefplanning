@@ -1203,7 +1203,7 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
-    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">🖨️ Partager</button>
   </div>
 
   <div class="conge-bar">
@@ -1676,16 +1676,113 @@ function exportPlanningExcel() {
 <body>${tbl}</body></html>`;
   
   const weekStr = days[0].getDate().toString().padStart(2,'0')+'-'+(days[0].getMonth()+1).toString().padStart(2,'0')+'-'+days[0].getFullYear();
-  // Use data URI - works on Android Chrome
-  const b64 = btoa(unescape(encodeURIComponent(html)));
-  const dataUri = 'data:application/vnd.ms-excel;base64,' + b64;
-  const a = document.createElement('a');
-  a.href = dataUri;
-  a.download = 'Planning_Cuisine_' + weekStr + '.xls';
-  a.target = '_blank';
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => document.body.removeChild(a), 2000);
+  
+  // Build a full printable page
+  const fullPage = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning Cuisine ${weekStr}</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #fff; margin: 0; padding: 10px; font-size: 10px; }
+  h2 { text-align: center; color: #1A0533; margin: 4px 0; font-size: 14px; }
+  .info { text-align: center; color: #666; margin-bottom: 8px; font-size: 11px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 4px 5px; text-align: center; white-space: nowrap; }
+  th { background: #1A0533; color: #C8A800; font-weight: bold; }
+  .td-name { text-align: left; font-weight: bold; min-width: 130px; background: #f5f0fa; }
+  .td-mat { color: #888; font-size: 9px; width: 50px; background: #f5f0fa; }
+  .td-grade { text-align: left; color: #666; font-size: 9px; background: #f5f0fa; }
+  .td-sec { color: #C8A800; font-weight: bold; font-size: 9px; text-align: left; background: #f5f0fa; }
+  .sec-row td { background: #2D0A4E !important; color: #C8A800; font-weight: bold; font-size: 10px; text-align: left; border-top: 2px solid #C8A800; }
+  .off { background: #fde8e8; color: #c00; font-weight: bold; }
+  .recup { background: #fff8e1; color: #c80; font-weight: bold; }
+  .double { background: #ede8ff; color: #6040c0; font-weight: bold; }
+  .conge { background: #e8f8ee; color: #080; font-weight: bold; }
+  .ferie { background: #fffbe6; color: #a80; font-weight: bold; }
+  .at { background: #fff3e0; color: #c60; font-weight: bold; }
+  .maladie { background: #fce4ec; color: #c00; font-weight: bold; }
+  .coupure { background: #e3f2fd; color: #1565c0; font-weight: bold; }
+  .summary { margin-top: 12px; font-size: 11px; }
+  .btn-bar { position: fixed; top: 0; left: 0; right: 0; background: #1A0533; padding: 8px 12px; display: flex; gap: 8px; z-index: 100; }
+  .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
+  .btn-print { background: #C8A800; color: #1A0533; }
+  .btn-close { background: #3A1560; color: #fff; }
+  .content { margin-top: 48px; }
+  @media print { .btn-bar { display: none; } .content { margin-top: 0; } }
+</style>
+</head>
+<body>
+<div class="btn-bar">
+  <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
+  <button class="btn btn-close" onclick="window.close()">✕ Fermer</button>
+  <span style="color:#C8A800;font-size:12px;margin:auto 0">Planning ${weekStr}</span>
+</div>
+<div class="content">
+<h2>CUISINE "Oasis" — Planning Hebdomadaire</h2>
+<div class="info">${fmtDate(days[0])} → ${fmtDate(days[6])} &nbsp;|&nbsp; ${state.cuisiniers.length} agents</div>
+<table>
+<thead><tr>
+  <th>MAT.</th><th style="text-align:left">NOM PRENOM</th><th style="text-align:left">SECTION</th><th style="text-align:left">GRADE</th>
+  ${days.map((d,i)=>{
+    const dn=['LUN','MAR','MER','JEU','VEN','SAM','DIM'][d.getDay()===0?6:d.getDay()-1];
+    const dt=d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0');
+    const isSun=d.getDay()===0,isSat=d.getDay()===6;
+    return '<th style="'+(isSat||isSun?'background:#2a0a4e':'')+'">'+dn+'<br>'+dt+'</th>';
+  }).join('')}
+</tr></thead>
+<tbody>`;
+
+  const secMap2 = {};
+  state.cuisiniers.forEach(c => {
+    const sec = c.poste || 'Autres';
+    if (!secMap2[sec]) secMap2[sec] = [];
+    secMap2[sec].push(c);
+  });
+
+  let rows = '';
+  let ri = 0;
+  Object.entries(secMap2).forEach(([secName, emps]) => {
+    rows += `<tr class="sec-row"><td colspan="11">${secName}</td></tr>`;
+    emps.forEach(emp => {
+      const bg = ri%2===0 ? '' : 'background:#faf8ff';
+      rows += `<tr style="${bg}">
+        <td class="td-mat">${emp.matricule||''}</td>
+        <td class="td-name">${emp.nom}</td>
+        <td class="td-sec"></td>
+        <td class="td-grade">${emp.grade}</td>`;
+      days.forEach((_,di) => {
+        const sh = getPlanShift(emp.id, di);
+        const val = sh ? sh.value : '';
+        const v = val.toUpperCase();
+        let cls = '';
+        if (v==='OFF') cls='off';
+        else if (v.includes('RECUP')||v.includes('RÉCUP')) cls='recup';
+        else if (v==='DOUBLE') cls='double';
+        else if (v.includes('CONGE')||v.includes('CONGÉ')) cls='conge';
+        else if (v.includes('FERIE')||v.includes('FÉRIÉ')) cls='ferie';
+        else if (v==='AT') cls='at';
+        else if (v==='MALADIE') cls='maladie';
+        else if (v==='COUPURE') cls='coupure';
+        rows += `<td class="${cls}">${val||''}</td>`;
+      });
+      rows += '</tr>';
+      ri++;
+    });
+  });
+
+  const fullHtml = fullPage + rows + `</tbody></table>
+<div class="summary">EFFECTIF CUISINE : <strong>${state.cuisiniers.length}</strong></div>
+</div></body></html>`;
+
+  const win = window.open('', '_blank');
+  if (win) {
+    win.document.write(fullHtml);
+    win.document.close();
+  } else {
+    alert('Activez les popups dans Chrome pour utiliser cette fonction.');
+  }
 }
 
 // ===== CLICK OUTSIDE =====
