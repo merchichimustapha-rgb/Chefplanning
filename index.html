@@ -1206,7 +1206,7 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
-    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">🖨️ Partager</button>
   </div>
 
   <div class="conge-bar">
@@ -1587,198 +1587,108 @@ function exportData() {
 
 function exportPlanningExcel() {
   const days = Array.from({length:7}, (_,i) => addDays(state.planWeekStart, i));
-  const dayNames = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMANCHE'];
-  
-  // Build HTML table that Excel opens natively with formatting
-  let tbl = `<table border="1" style="border-collapse:collapse;font-family:Arial;font-size:10pt">`;
-  
-  // Header rows
-  tbl += `<tr>
-    <td colspan="11" style="background:#1A0533;color:#C8A800;font-weight:bold;font-size:14pt;text-align:center;padding:8px">CUISINE "Oasis" — Planning Hebdomadaire</td>
-  </tr>
-  <tr>
-    <td style="background:#1A0533;color:#C8A800;font-weight:bold">Semaine:</td>
-    <td colspan="3" style="background:#1A0533;color:#F0EAF8;font-weight:bold">${fmtDate(days[0])} → ${fmtDate(days[6])}</td>
-    <td colspan="7" style="background:#1A0533"></td>
-  </tr>
-  <tr>
-    <td style="background:#2D0A4E;color:#C8A800;font-weight:bold;text-align:center">MATRICULE</td>
-    <td style="background:#2D0A4E;color:#C8A800;font-weight:bold">NOM PRENOM</td>
-    <td style="background:#2D0A4E;color:#C8A800;font-weight:bold">SECTION</td>
-    <td style="background:#2D0A4E;color:#C8A800;font-weight:bold">GRADE</td>`;
-  
-  days.forEach((d,i) => {
-    const ds = d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getFullYear();
-    const isSun = d.getDay()===0, isSat = d.getDay()===6;
-    const bg = (isSat||isSun) ? '#3A1560' : '#2D0A4E';
-    tbl += `<td style="background:${bg};color:#C8A800;font-weight:bold;text-align:center;min-width:80px">${ds}<br><span style="color:#F0EAF8">${dayNames[i]}</span></td>`;
-  });
-  tbl += '</tr>';
-  
-  // Data
+  const DAY_NAMES = ['LUN','MAR','MER','JEU','VEN','SAM','DIM'];
+
+  // Group employees by section
   const secMap = {};
   state.cuisiniers.forEach(c => {
     const sec = c.poste || 'Autres';
     if (!secMap[sec]) secMap[sec] = [];
     secMap[sec].push(c);
   });
-  
-  let rowIdx = 0;
+
+  // Build rows HTML
+  let rowsHtml = '';
   Object.entries(secMap).forEach(([secName, emps]) => {
-    emps.forEach((emp, ei) => {
-      const rowBg = rowIdx%2===0 ? '#160630' : '#200840';
-      tbl += `<tr>
-        <td style="background:${rowBg};color:#9080A8;text-align:center">${emp.matricule||''}</td>
-        <td style="background:${rowBg};color:#F0EAF8;font-weight:bold">${emp.nom}</td>
-        <td style="background:${rowBg};color:#C8A800;font-size:9pt">${ei===0?secName:''}</td>
-        <td style="background:${rowBg};color:#9080A8;font-size:9pt">${emp.grade}</td>`;
-      
+    rowsHtml += `<tr><td colspan="${4+days.length}" style="background:#1A0533;color:#C8A800;font-weight:bold;font-size:11px;padding:5px 8px;border-top:2px solid #C8A800">${secName}</td></tr>`;
+    emps.forEach((emp, ri) => {
+      const bg = ri%2===0 ? '#ffffff' : '#f5f0ff';
+      let row = `<tr style="background:${bg}">
+        <td style="color:#333;font-size:9px;text-align:center;padding:3px 4px;border:1px solid #ddd;width:35px">${emp.matricule||''}</td>
+        <td style="color:#000;font-weight:bold;font-size:10px;text-align:left;padding:3px 5px;border:1px solid #ddd;min-width:120px">${emp.nom}</td>
+        <td style="color:#555;font-size:9px;text-align:left;padding:3px 4px;border:1px solid #ddd;min-width:110px">${emp.grade}</td>`;
       days.forEach((_,di) => {
         const sh = getPlanShift(emp.id, di);
         const val = sh ? sh.value : '';
         const v = val.toUpperCase();
-        let bg = rowBg, color = '#F0EAF8', fw = 'normal';
-        if (v==='OFF') { bg='#3D0A0A'; color='#EF4444'; fw='bold'; }
-        else if (v.includes('RECUP')||v.includes('RÉCUP')) { bg='#3D2A00'; color='#F59E0B'; fw='bold'; }
-        else if (v==='DOUBLE') { bg='#1a1040'; color='#818CF8'; fw='bold'; }
-        else if (v.includes('CONGE')||v.includes('CONGÉ')) { bg='#0a2a1a'; color='#34D399'; fw='bold'; }
-        else if (v.includes('FERIE')||v.includes('FÉRIÉ')) { bg='#1a1200'; color='#C8A800'; fw='bold'; }
-        else if (v==='AT') { bg='#2A1000'; color='#FB923C'; fw='bold'; }
-        else if (v==='MALADIE') { bg='#2A0808'; color='#F87171'; fw='bold'; }
-        else if (v==='COUPURE') { bg='#0a1a2a'; color='#60A5FA'; fw='bold'; }
-        else if (v) { fw='bold'; }
-        tbl += `<td style="background:${bg};color:${color};font-weight:${fw};text-align:center">${val||''}</td>`;
+        let bg2='', color='#000', fw='normal';
+        if(v==='OFF'){bg2='#ffe4e4';color='#cc0000';fw='bold';}
+        else if(v.includes('RECUP')||v.includes('RÉCUP')){bg2='#fff8dc';color='#b8860b';fw='bold';}
+        else if(v==='DOUBLE'){bg2='#ede8ff';color='#5b21b6';fw='bold';}
+        else if(v.includes('CONGE')||v.includes('CONGÉ')){bg2='#dcfce7';color='#166534';fw='bold';}
+        else if(v.includes('FERIE')||v.includes('FÉRIÉ')){bg2='#fef9c3';color='#854d0e';fw='bold';}
+        else if(v==='AT'){bg2='#ffedd5';color='#c2410c';fw='bold';}
+        else if(v==='MALADIE'){bg2='#fce7f3';color='#9d174d';fw='bold';}
+        else if(v==='COUPURE'){bg2='#dbeafe';color='#1d4ed8';fw='bold';}
+        else if(val){fw='bold';}
+        row += `<td style="text-align:center;padding:3px 4px;border:1px solid #ddd;font-size:10px;font-weight:${fw};color:${color};background:${bg2||bg};min-width:75px">${val||''}</td>`;
       });
-      tbl += '</tr>';
-      rowIdx++;
+      row += '</tr>';
+      rowsHtml += row;
     });
   });
-  
-  // Summary
-  tbl += `<tr>
-    <td colspan="2" style="background:#1A0533;color:#C8A800;font-weight:bold">EFFECTIF CUISINE</td>
-    <td style="background:#1A0533;color:#F0EAF8;font-weight:bold;text-align:center">${state.cuisiniers.length}</td>
-    <td colspan="8" style="background:#1A0533"></td>
-  </tr>`;
-  tbl += '</table>';
-  
-  // Use HTML approach that Excel opens
-  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-<head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>CUISINE</x:Name></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
-<body>${tbl}</body></html>`;
-  
-  const weekStr = days[0].getDate().toString().padStart(2,'0')+'-'+(days[0].getMonth()+1).toString().padStart(2,'0')+'-'+days[0].getFullYear();
-  
-  // Build a full printable page
-  const fullPage = `<!DOCTYPE html>
+
+  // Build day headers
+  const dayHeaders = days.map((d,i) => {
+    const dn = DAY_NAMES[d.getDay()===0?6:d.getDay()-1];
+    const dt = d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0');
+    const wk = (d.getDay()===0||d.getDay()===6);
+    return `<th style="background:${wk?'#2a0a5e':'#1A0533'};color:#C8A800;padding:4px 3px;border:1px solid #3A1560;min-width:75px;font-size:10px">${dn}<br><span style="color:#fff;font-weight:normal">${dt}</span></th>`;
+  }).join('');
+
+  const fullHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planning Cuisine ${weekStr}</title>
+<title>Planning Cuisine ${fmtDate(days[0])}</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #fff; margin: 0; padding: 10px; font-size: 10px; }
-  h2 { text-align: center; color: #1A0533; margin: 4px 0; font-size: 14px; }
-  .info { text-align: center; color: #666; margin-bottom: 8px; font-size: 11px; }
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { border-collapse: collapse; min-width: 600px; }
-  th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; white-space: nowrap; }
-  th { background: #1A0533; color: #C8A800; font-weight: bold; }
-  .td-name { text-align: left; font-weight: bold; min-width: 130px; background: #f5f0fa; color: #1A0533 !important; }
-  .td-mat { color: #555; font-size: 9px; width: 40px; background: #f5f0fa; }
-  .td-grade { text-align: left; color: #333; font-size: 9px; min-width: 120px; background: #f5f0fa; }
-  .td-sec { color: #C8A800; font-weight: bold; font-size: 9px; text-align: left; background: #f5f0fa; }
-  .sec-row td { background: #2D0A4E !important; color: #C8A800; font-weight: bold; font-size: 10px; text-align: left; border-top: 2px solid #C8A800; }
-  .off { background: #fde8e8; color: #c00; font-weight: bold; }
-  .recup { background: #fff8e1; color: #c80; font-weight: bold; }
-  .double { background: #ede8ff; color: #6040c0; font-weight: bold; }
-  .conge { background: #e8f8ee; color: #080; font-weight: bold; }
-  .ferie { background: #fffbe6; color: #a80; font-weight: bold; }
-  .at { background: #fff3e0; color: #c60; font-weight: bold; }
-  .maladie { background: #fce4ec; color: #c00; font-weight: bold; }
-  .coupure { background: #e3f2fd; color: #1565c0; font-weight: bold; }
-  .summary { margin-top: 12px; font-size: 11px; }
-  .btn-bar { position: fixed; top: 0; left: 0; right: 0; background: #1A0533; padding: 8px 12px; display: flex; gap: 8px; z-index: 100; }
-  .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
-  .btn-print { background: #C8A800; color: #1A0533; }
-  .btn-close { background: #3A1560; color: #fff; }
-  .content { margin-top: 48px; }
-  @media print { .btn-bar { display: none; } .content { margin-top: 0; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #fff; padding: 8px; }
+.header { text-align: center; background: #1A0533; color: #C8A800; padding: 10px; border-radius: 8px; margin-bottom: 8px; }
+.header h2 { font-size: 15px; margin-bottom: 3px; }
+.header p { font-size: 11px; color: #ddd; }
+.btn-bar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.btn { padding: 10px 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; flex: 1; min-width: 120px; }
+.btn-print { background: #C8A800; color: #1A0533; }
+.btn-close { background: #3A1560; color: #fff; }
+.wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; min-width: 500px; width: 100%; }
+thead th { background: #1A0533; color: #C8A800; padding: 5px 4px; border: 1px solid #3A1560; font-size: 10px; white-space: nowrap; }
+.summary { margin-top: 10px; font-size: 11px; color: #555; text-align: right; padding: 5px; }
+@media print { .btn-bar { display: none; } }
 </style>
 </head>
 <body>
 <div class="btn-bar">
   <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
-  <button class="btn" style="background:#22C55E;color:#fff" onclick="window.print()">📥 Télécharger PDF</button>
   <button class="btn btn-close" onclick="document.getElementById('planOverlay').style.display='none'">✕ Fermer</button>
-  <span style="color:#C8A800;font-size:12px;margin:auto 0">Planning ${weekStr}</span>
 </div>
-<div class="content">
-<h2>CUISINE "Oasis" — Planning Hebdomadaire</h2>
-<div class="info">${fmtDate(days[0])} → ${fmtDate(days[6])} &nbsp;|&nbsp; ${state.cuisiniers.length} agents</div>
-<div class="table-wrap">
+<div class="header">
+  <h2>CUISINE "Oasis" — Planning Hebdomadaire</h2>
+  <p>${fmtDate(days[0])} → ${fmtDate(days[6])} &nbsp;|&nbsp; ${state.cuisiniers.length} agents</p>
+</div>
+<div class="wrap">
 <table>
 <thead><tr>
-  <th>MAT.</th><th style="text-align:left">NOM PRENOM</th><th style="text-align:left">SECTION</th><th style="text-align:left">GRADE</th>
-  ${days.map((d,i)=>{
-    const dn=['LUN','MAR','MER','JEU','VEN','SAM','DIM'][d.getDay()===0?6:d.getDay()-1];
-    const dt=d.getDate().toString().padStart(2,'0')+'/'+(d.getMonth()+1).toString().padStart(2,'0');
-    const isSun=d.getDay()===0,isSat=d.getDay()===6;
-    return '<th style="'+(isSat||isSun?'background:#2a0a4e':'')+'">'+dn+'<br>'+dt+'</th>';
-  }).join('')}
+  <th style="background:#1A0533;color:#C8A800;padding:5px 4px;border:1px solid #3A1560;font-size:10px">MAT.</th>
+  <th style="background:#1A0533;color:#C8A800;padding:5px 4px;border:1px solid #3A1560;font-size:10px;text-align:left;min-width:120px">NOM PRENOM</th>
+  <th style="background:#1A0533;color:#C8A800;padding:5px 4px;border:1px solid #3A1560;font-size:10px;text-align:left;min-width:110px">GRADE</th>
+  ${dayHeaders}
 </tr></thead>
-<tbody>`;
+<tbody>${rowsHtml}</tbody>
+</table>
+</div>
+<div class="summary">EFFECTIF : ${state.cuisiniers.length} agents</div>
+</body></html>`;
 
-  const secMap2 = {};
-  state.cuisiniers.forEach(c => {
-    const sec = c.poste || 'Autres';
-    if (!secMap2[sec]) secMap2[sec] = [];
-    secMap2[sec].push(c);
-  });
-
-  let rows = '';
-  let ri = 0;
-  Object.entries(secMap2).forEach(([secName, emps]) => {
-    rows += `<tr class="sec-row"><td colspan="11">${secName}</td></tr>`;
-    emps.forEach(emp => {
-      const bg = ri%2===0 ? 'background:#ffffff' : 'background:#f8f5ff';
-      rows += `<tr style="${bg}">
-        <td class="td-mat">${emp.matricule||''}</td>
-        <td class="td-name" style="color:#1A0533">${emp.nom}</td>
-        <td class="td-sec"></td>
-        <td class="td-grade" style="color:#444">${emp.grade}</td>`;
-      days.forEach((_,di) => {
-        const sh = getPlanShift(emp.id, di);
-        const val = sh ? sh.value : '';
-        const v = val.toUpperCase();
-        let cls = '';
-        if (v==='OFF') cls='off';
-        else if (v.includes('RECUP')||v.includes('RÉCUP')) cls='recup';
-        else if (v==='DOUBLE') cls='double';
-        else if (v.includes('CONGE')||v.includes('CONGÉ')) cls='conge';
-        else if (v.includes('FERIE')||v.includes('FÉRIÉ')) cls='ferie';
-        else if (v==='AT') cls='at';
-        else if (v==='MALADIE') cls='maladie';
-        else if (v==='COUPURE') cls='coupure';
-        rows += `<td class="${cls}">${val||''}</td>`;
-      });
-      rows += '</tr>';
-      ri++;
-    });
-  });
-
-  const fullHtml = fullPage + rows + `</tbody></table>
-<div class="summary">EFFECTIF CUISINE : <strong>${state.cuisiniers.length}</strong></div>
-</div></div></body></html>`;
-
-  // Show planning in overlay div inside same page - works in PWA
   const overlay = document.getElementById('planOverlay');
   if (overlay) {
     overlay.innerHTML = fullHtml;
     overlay.style.display = 'block';
+    overlay.scrollTop = 0;
   }
 }
-
 // ===== CLICK OUTSIDE =====
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('open'); });
