@@ -1684,9 +1684,9 @@ function exportPlanningExcel() {
   table { border-collapse: collapse; min-width: 600px; }
   th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: center; white-space: nowrap; }
   th { background: #1A0533; color: #C8A800; font-weight: bold; }
-  .td-name { text-align: left; font-weight: bold; min-width: 130px; background: #f5f0fa; }
-  .td-mat { color: #888; font-size: 9px; width: 40px; background: #f5f0fa; }
-  .td-grade { text-align: left; color: #666; font-size: 9px; min-width: 120px; background: #f5f0fa; }
+  .td-name { text-align: left; font-weight: bold; min-width: 130px; background: #f5f0fa; color: #1A0533 !important; }
+  .td-mat { color: #555; font-size: 9px; width: 40px; background: #f5f0fa; }
+  .td-grade { text-align: left; color: #333; font-size: 9px; min-width: 120px; background: #f5f0fa; }
   .td-sec { color: #C8A800; font-weight: bold; font-size: 9px; text-align: left; background: #f5f0fa; }
   .sec-row td { background: #2D0A4E !important; color: #C8A800; font-weight: bold; font-size: 10px; text-align: left; border-top: 2px solid #C8A800; }
   .off { background: #fde8e8; color: #c00; font-weight: bold; }
@@ -1741,12 +1741,12 @@ function exportPlanningExcel() {
   Object.entries(secMap2).forEach(([secName, emps]) => {
     rows += `<tr class="sec-row"><td colspan="11">${secName}</td></tr>`;
     emps.forEach(emp => {
-      const bg = ri%2===0 ? '' : 'background:#faf8ff';
+      const bg = ri%2===0 ? 'background:#ffffff' : 'background:#f8f5ff';
       rows += `<tr style="${bg}">
         <td class="td-mat">${emp.matricule||''}</td>
-        <td class="td-name">${emp.nom}</td>
+        <td class="td-name" style="color:#1A0533">${emp.nom}</td>
         <td class="td-sec"></td>
-        <td class="td-grade">${emp.grade}</td>`;
+        <td class="td-grade" style="color:#444">${emp.grade}</td>`;
       days.forEach((_,di) => {
         const sh = getPlanShift(emp.id, di);
         const val = sh ? sh.value : '';
