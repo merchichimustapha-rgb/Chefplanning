@@ -267,13 +267,13 @@
   .ferie-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 8px 10px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    margin-bottom: 8px;
-    font-size: 13px;
+    margin-bottom: 6px;
+    font-size: 12px;
   }
   .ferie-date { color: var(--gold); font-weight: 700; min-width: 90px; }
   .ferie-name { flex: 1; }
@@ -793,6 +793,35 @@
 <!-- PLAN OVERLAY -->
 <div id="planOverlay" style="display:none;position:fixed;inset:0;background:#fff;z-index:999;overflow:auto;-webkit-overflow-scrolling:touch"></div>
 
+<!-- MODAL EDIT FERIE -->
+<div class="modal-overlay" id="ferieModal">
+  <div class="modal">
+    <h2>📅 Modifier / Ajouter un Jour Férié</h2>
+    <div class="form-group">
+      <label>Nom</label>
+      <input type="text" id="ferieNom" placeholder="Ex: Mawlid Annabawi">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="ferieDate">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="ferieType">
+          <option value="nat">National</option>
+          <option value="rel">Religieux</option>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" id="ferieEditId">
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('ferieModal')">Annuler</button>
+      <button class="btn-save" onclick="saveFerie()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL PLANNING SHIFT -->
 <div class="modal-overlay" id="planShiftModal">
   <div class="modal">
@@ -870,12 +899,12 @@ let state = {
 };
 
 const JOURS_FERIES_2025 = [
-  { date: '2025-01-13', nom: 'Yennayer (Nouvel An Amazigh)', type: 'nat' },
+  { date: '2025-01-14', nom: 'Yennayer (Nouvel An Amazigh)', type: 'nat' },
   { date: '2025-01-11', nom: 'Manifeste de l\'Indépendance', type: 'nat' },
   { date: '2025-03-30', nom: 'Aïd Al Fitr', type: 'rel' },
   { date: '2025-04-23', nom: 'Aïd Al Adha', type: 'rel' },
   { date: '2025-05-01', nom: 'Fête du Travail', type: 'nat' },
-  { date: '2025-05-14', nom: 'Nouvel An Hégire (Ras Assana)', type: 'rel' },
+  { date: '2025-06-16', nom: 'Nouvel An Hégire (Ras Assana)', type: 'rel' },
   { date: '2025-07-30', nom: 'Fête du Trône', type: 'nat' },
   { date: '2025-08-14', nom: 'Anniversaire de la Récupération de l\'Oued Eddahab', type: 'nat' },
   { date: '2025-08-20', nom: 'Fête de la Révolution', type: 'nat' },
@@ -886,7 +915,7 @@ const JOURS_FERIES_2025 = [
 ];
 
 const JOURS_FERIES_2026 = [
-  { date: '2026-01-13', nom: 'Yennayer (Nouvel An Amazigh)', type: 'nat' },
+  { date: '2026-01-14', nom: 'Yennayer (Nouvel An Amazigh)', type: 'nat' },
   { date: '2026-01-11', nom: 'Manifeste de l\'Indépendance', type: 'nat' },
   { date: '2026-02-18', nom: 'Nouvel An Hégire (Ras Assana)', type: 'rel' },
   { date: '2026-03-20', nom: 'Aïd Al Fitr', type: 'rel' },
@@ -900,7 +929,7 @@ const JOURS_FERIES_2026 = [
   { date: '2026-11-18', nom: 'Fête de l\'Indépendance', type: 'nat' },
 ];
 
-const ALL_FERIES = [...JOURS_FERIES_2025, ...JOURS_FERIES_2026].sort((a,b) => a.date.localeCompare(b.date));
+let ALL_FERIES = [...JOURS_FERIES_2025, ...JOURS_FERIES_2026].sort((a,b) => a.date.localeCompare(b.date));
 
 
 const DEFAULT_DATA = {"cuisiniers": [{"id": "e1", "nom": "Mohammed Rachadi", "matricule": "", "grade": "CHEF EXECUTIF", "poste": "Chef", "events": []}, {"id": "e2", "nom": "Saaddine Rahibi", "matricule": "246", "grade": "SOUS CHEF", "poste": "Chef", "events": []}, {"id": "e3", "nom": "Mustapha EL Merchichi", "matricule": "124", "grade": "1ER CHEF DE PARTIE", "poste": "Chef", "events": []}, {"id": "e4", "nom": "Youssef Errbib", "matricule": "165", "grade": "CHEF DE PARTIE", "poste": "Chef", "events": []}, {"id": "e5", "nom": "Mohemmed Chmartal", "matricule": "1292", "grade": "CHEF DE PARTIE", "poste": "Petit dejeuner", "events": []}, {"id": "e6", "nom": "Jdi Hassane", "matricule": "1836", "grade": "CHEF DE PARTIE", "poste": "Petit dejeuner", "events": []}, {"id": "e7", "nom": "Omaima Aboulhawl", "matricule": "1751", "grade": "COMMIS DE CUISINE", "poste": "Petit dejeuner", "events": []}, {"id": "e8", "nom": "Fatime Zahra", "matricule": "", "grade": "CHEF DE PARTIE", "poste": "Petit dejeuner", "events": []}, {"id": "e9", "nom": "Beladdi Khadija", "matricule": "1878", "grade": "DEMI CHEF DE PARTIE", "poste": "Petit dejeuner", "events": []}, {"id": "e10", "nom": "Karima", "matricule": "", "grade": "CHEF DE PARTIE", "poste": "Marocaine", "events": []}, {"id": "e11", "nom": "Fatime Zahra", "matricule": "", "grade": "CHEFFE MAROCANE", "poste": "Marocaine", "events": []}, {"id": "e12", "nom": "Omaima", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Marocaine", "events": []}, {"id": "e13", "nom": "Ouakrime Hichame", "matricule": "1083", "grade": "DEMI CHEF DE PARTIE", "poste": "Refectoire", "events": []}, {"id": "e14", "nom": "Chaima", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Refectoire", "events": []}, {"id": "e15", "nom": "Errbib Mohammed", "matricule": "1781", "grade": "CHEF DE PARTIE", "poste": "Chaud Matin", "events": []}, {"id": "e16", "nom": "Ghizlane Mazahare", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Chaud Matin", "events": []}, {"id": "e17", "nom": "Soukaina", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Chaud Matin", "events": []}, {"id": "e18", "nom": "Hamza", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Chaud Matin", "events": []}, {"id": "e19", "nom": "Khadija", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Chaud Matin", "events": []}, {"id": "e20", "nom": "El Marrakchi Ayoub", "matricule": "164", "grade": "CHEF DE PARTIE", "poste": "Safrane", "events": []}, {"id": "e21", "nom": "Akrout Khalid", "matricule": "163", "grade": "CHEF DE PARTIE", "poste": "Chaud Soir", "events": []}, {"id": "e22", "nom": "Houssni", "matricule": "1715", "grade": "COMMIS DE CUISINE", "poste": "Chaud Soir", "events": []}, {"id": "e23", "nom": "Ilyas", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Chaud Soir", "events": []}, {"id": "e24", "nom": "El Farissi Younes", "matricule": "1734", "grade": "DEMI CHEF DE PARTIE", "poste": "Chaud Soir", "events": []}, {"id": "e25", "nom": "Rachid Sidchikhe", "matricule": "1791", "grade": "CHEF DE PARTIE", "poste": "Chaud Soir", "events": []}, {"id": "e26", "nom": "Ouaddi Younes", "matricule": "", "grade": "CHEF DE PARTIE", "poste": "Snack", "events": []}, {"id": "e27", "nom": "Errbib Amine", "matricule": "69", "grade": "CHEF BOUCHERIE", "poste": "Boucherie", "events": []}, {"id": "e28", "nom": "Younes", "matricule": "1834", "grade": "DEMI CHEF DE PARTIE", "poste": "Boucherie", "events": []}, {"id": "e29", "nom": "El Ghazi", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Boucherie", "events": []}, {"id": "e30", "nom": "Ainin Abderrahim", "matricule": "1727", "grade": "CHEF DE PARTIE", "poste": "Boucherie", "events": []}, {"id": "e31", "nom": "EL Bahloule Hanane", "matricule": "189", "grade": "CHEF DE PARTIE", "poste": "Garde Manger", "events": []}, {"id": "e32", "nom": "Ayoub Nassyr", "matricule": "1864", "grade": "CHEF DE PARTIE", "poste": "Garde Manger", "events": []}, {"id": "e33", "nom": "Ibtissam", "matricule": "1887", "grade": "DEMI CHEF DE PARTIE", "poste": "Garde Manger", "events": []}, {"id": "e34", "nom": "Omar", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Garde Manger", "events": []}, {"id": "e35", "nom": "Marouane", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Garde Manger", "events": []}, {"id": "e36", "nom": "Reda", "matricule": "", "grade": "COMMIS DE CUISINE", "poste": "Garde Manger", "events": []}], "planShifts": {"e1_0": {"value": "COUPURE", "note": ""}, "e1_1": {"value": "COUPURE", "note": ""}, "e1_2": {"value": "COUPURE", "note": ""}, "e1_3": {"value": "COUPURE", "note": ""}, "e1_4": {"value": "COUPURE", "note": ""}, "e1_5": {"value": "COUPURE", "note": ""}, "e1_6": {"value": "OFF", "note": ""}, "e2_0": {"value": "départ", "note": ""}, "e2_1": {"value": "départ", "note": ""}, "e2_2": {"value": "départ", "note": ""}, "e2_3": {"value": "départ", "note": ""}, "e2_4": {"value": "départ", "note": ""}, "e2_5": {"value": "départ", "note": ""}, "e2_6": {"value": "départ", "note": ""}, "e3_0": {"value": "15H00-23H00", "note": ""}, "e3_1": {"value": "OFF", "note": ""}, "e3_2": {"value": "15H00-23H00", "note": ""}, "e3_3": {"value": "15H00-23H00", "note": ""}, "e3_4": {"value": "15H00-23H00", "note": ""}, "e3_5": {"value": "15H00-23H00", "note": ""}, "e3_6": {"value": "COUPURE", "note": ""}, "e4_0": {"value": "15H00-23H00", "note": ""}, "e4_1": {"value": "15H00-23H00", "note": ""}, "e4_2": {"value": "15H00-23H00", "note": ""}, "e4_3": {"value": "15H00-23H00", "note": ""}, "e4_4": {"value": "OFF", "note": ""}, "e4_5": {"value": "15H00-23H00", "note": ""}, "e4_6": {"value": "15H00-23H00", "note": ""}, "e5_0": {"value": "07H00-15H00", "note": ""}, "e5_1": {"value": "07H00-15H00", "note": ""}, "e5_2": {"value": "07H00-15H00", "note": ""}, "e5_3": {"value": "OFF", "note": ""}, "e5_4": {"value": "07H00-15H00", "note": ""}, "e5_5": {"value": "07H00-15H00", "note": ""}, "e5_6": {"value": "07H00-15H00", "note": ""}, "e6_0": {"value": "23H00-07H00", "note": ""}, "e6_1": {"value": "23H00-07H00", "note": ""}, "e6_2": {"value": "23H00-07H00", "note": ""}, "e6_3": {"value": "23H00-07H00", "note": ""}, "e6_4": {"value": "23H00-07H00", "note": ""}, "e6_5": {"value": "23H00-07H00", "note": ""}, "e6_6": {"value": "23H00-07H00", "note": ""}, "e7_0": {"value": "07H00-15H00", "note": ""}, "e7_1": {"value": "OFF", "note": ""}, "e7_2": {"value": "07H00-15H00", "note": ""}, "e7_3": {"value": "07H00-15H00", "note": ""}, "e7_4": {"value": "07H00-15H00", "note": ""}, "e7_5": {"value": "07H00-15H00", "note": ""}, "e7_6": {"value": "07H00-15H00", "note": ""}, "e8_0": {"value": "OFF", "note": ""}, "e8_1": {"value": "07H00-15H00", "note": ""}, "e8_2": {"value": "07H00-15H00", "note": ""}, "e8_3": {"value": "07H00-15H00", "note": ""}, "e8_4": {"value": "07H00-15H00", "note": ""}, "e8_5": {"value": "07H00-15H00", "note": ""}, "e8_6": {"value": "07H00-15H00", "note": ""}, "e9_0": {"value": "07H00-15H00", "note": ""}, "e9_1": {"value": "07H00-15H00", "note": ""}, "e9_2": {"value": "OFF", "note": ""}, "e9_3": {"value": "07H00-15H00", "note": ""}, "e9_4": {"value": "07H00-15H00", "note": ""}, "e9_5": {"value": "07H00-15H00", "note": ""}, "e9_6": {"value": "07H00-15H00", "note": ""}, "e10_0": {"value": "15H00-23H00", "note": ""}, "e10_1": {"value": "15H00-23H00", "note": ""}, "e10_2": {"value": "15H00-23H00", "note": ""}, "e10_3": {"value": "15H00-23H00", "note": ""}, "e10_4": {"value": "OFF", "note": ""}, "e10_5": {"value": "15H00-23H00", "note": ""}, "e10_6": {"value": "15H00-23H00", "note": ""}, "e11_0": {"value": "09H00-17H00", "note": ""}, "e11_1": {"value": "09H00-17H00", "note": ""}, "e11_2": {"value": "09H00-17H00", "note": ""}, "e11_3": {"value": "OFF", "note": ""}, "e11_4": {"value": "09H00-17H00", "note": ""}, "e11_5": {"value": "09H00-17H00", "note": ""}, "e11_6": {"value": "09H00-17H00", "note": ""}, "e12_0": {"value": "09H00-17H00", "note": ""}, "e12_1": {"value": "OFF", "note": ""}, "e12_2": {"value": "09H00-17H00", "note": ""}, "e12_3": {"value": "09H00-17H00", "note": ""}, "e12_4": {"value": "09H00-17H00", "note": ""}, "e12_5": {"value": "09H00-17H00", "note": ""}, "e12_6": {"value": "09H00-17H00", "note": ""}, "e13_0": {"value": "07H00-15H00", "note": ""}, "e13_1": {"value": "07H00-15H00", "note": ""}, "e13_2": {"value": "07H00-15H00", "note": ""}, "e13_3": {"value": "07H00-15H00", "note": ""}, "e13_4": {"value": "07H00-15H00", "note": ""}, "e13_5": {"value": "07H00-15H00", "note": ""}, "e13_6": {"value": "OFF", "note": ""}, "e14_0": {"value": "OFF", "note": ""}, "e14_1": {"value": "09H00-17H00", "note": ""}, "e14_2": {"value": "09H00-17H00", "note": ""}, "e14_3": {"value": "09H00-17H00", "note": ""}, "e14_4": {"value": "09H00-17H00", "note": ""}, "e14_5": {"value": "09H00-17H00", "note": ""}, "e14_6": {"value": "09H00-17H00", "note": ""}, "e15_0": {"value": "08H00-16H00", "note": ""}, "e15_1": {"value": "08H00-16H00", "note": ""}, "e15_2": {"value": "08H00-16H00", "note": ""}, "e15_3": {"value": "08H00-16H00", "note": ""}, "e15_4": {"value": "OFF", "note": ""}, "e15_5": {"value": "08H00-16H00", "note": ""}, "e15_6": {"value": "08H00-16H00", "note": ""}, "e16_0": {"value": "OFF", "note": ""}, "e16_1": {"value": "08H00-16H00", "note": ""}, "e16_2": {"value": "08H00-16H00", "note": ""}, "e16_3": {"value": "08H00-16H00", "note": ""}, "e16_4": {"value": "08H00-16H00", "note": ""}, "e16_5": {"value": "08H00-16H00", "note": ""}, "e16_6": {"value": "08H00-16H00", "note": ""}, "e17_0": {"value": "08H00-16H00", "note": ""}, "e17_1": {"value": "08H00-16H00", "note": ""}, "e17_2": {"value": "OFF", "note": ""}, "e17_3": {"value": "08H00-16H00", "note": ""}, "e17_4": {"value": "08H00-16H00", "note": ""}, "e17_5": {"value": "08H00-16H00", "note": ""}, "e17_6": {"value": "08H00-16H00", "note": ""}, "e18_0": {"value": "08H00-16H00", "note": ""}, "e18_1": {"value": "08H00-16H00", "note": ""}, "e18_2": {"value": "08H00-16H00", "note": ""}, "e18_3": {"value": "OFF", "note": ""}, "e18_4": {"value": "08H00-16H00", "note": ""}, "e18_5": {"value": "08H00-16H00", "note": ""}, "e18_6": {"value": "08H00-16H00", "note": ""}, "e19_0": {"value": "08H00-16H00", "note": ""}, "e19_1": {"value": "OFF", "note": ""}, "e19_2": {"value": "08H00-16H00", "note": ""}, "e19_3": {"value": "08H00-16H00", "note": ""}, "e19_4": {"value": "08H00-16H00", "note": ""}, "e19_5": {"value": "08H00-16H00", "note": ""}, "e19_6": {"value": "08H00-16H00", "note": ""}, "e20_0": {"value": "15H00-23H00", "note": ""}, "e20_1": {"value": "15H00-23H00", "note": ""}, "e20_2": {"value": "15H00-23H00", "note": ""}, "e20_3": {"value": "OFF", "note": ""}, "e20_4": {"value": "15H00-23H00", "note": ""}, "e20_5": {"value": "15H00-23H00", "note": ""}, "e20_6": {"value": "15H00-23H00", "note": ""}, "e21_0": {"value": "15H00-23H00", "note": ""}, "e21_1": {"value": "15H00-23H00", "note": ""}, "e21_2": {"value": "OFF", "note": ""}, "e21_3": {"value": "15H00-23H00", "note": ""}, "e21_4": {"value": "15H00-23H00", "note": ""}, "e21_5": {"value": "15H00-23H00", "note": ""}, "e21_6": {"value": "15H00-23H00", "note": ""}, "e22_0": {"value": "OFF", "note": ""}, "e22_1": {"value": "15H00-23H00", "note": ""}, "e22_2": {"value": "15H00-23H00", "note": ""}, "e22_3": {"value": "15H00-23H00", "note": ""}, "e22_4": {"value": "15H00-23H00", "note": ""}, "e22_5": {"value": "15H00-23H00", "note": ""}, "e22_6": {"value": "15H00-23H00", "note": ""}, "e23_0": {"value": "15H00-23H00", "note": ""}, "e23_1": {"value": "15H00-23H00", "note": ""}, "e23_2": {"value": "15H00-23H00", "note": ""}, "e23_3": {"value": "OFF", "note": ""}, "e23_4": {"value": "15H00-23H00", "note": ""}, "e23_5": {"value": "15H00-23H00", "note": ""}, "e23_6": {"value": "15H00-23H00", "note": ""}, "e24_0": {"value": "départ", "note": ""}, "e24_1": {"value": "départ", "note": ""}, "e24_2": {"value": "départ", "note": ""}, "e24_3": {"value": "départ", "note": ""}, "e24_4": {"value": "départ", "note": ""}, "e24_5": {"value": "départ", "note": ""}, "e24_6": {"value": "départ", "note": ""}, "e25_0": {"value": "15H00-23H00", "note": ""}, "e25_1": {"value": "OFF", "note": ""}, "e25_2": {"value": "15H00-23H00", "note": ""}, "e25_3": {"value": "15H00-23H00", "note": ""}, "e25_4": {"value": "15H00-23H00", "note": ""}, "e25_5": {"value": "15H00-23H00", "note": ""}, "e25_6": {"value": "15H00-23H00", "note": ""}, "e26_0": {"value": "maladie", "note": ""}, "e26_1": {"value": "maladie", "note": ""}, "e26_2": {"value": "maladie", "note": ""}, "e26_3": {"value": "maladie", "note": ""}, "e26_4": {"value": "maladie", "note": ""}, "e26_5": {"value": "maladie", "note": ""}, "e26_6": {"value": "maladie", "note": ""}, "e27_0": {"value": "10H00-18H00", "note": ""}, "e27_1": {"value": "10H00-18H00", "note": ""}, "e27_2": {"value": "10H00-18H00", "note": ""}, "e27_3": {"value": "10H00-18H00", "note": ""}, "e27_4": {"value": "OFF", "note": ""}, "e27_5": {"value": "10H00-18H00", "note": ""}, "e27_6": {"value": "10H00-18H00", "note": ""}, "e28_0": {"value": "09H00-17H00", "note": ""}, "e28_1": {"value": "09H00-17H00", "note": ""}, "e28_2": {"value": "09H00-17H00", "note": ""}, "e28_3": {"value": "09H00-17H00", "note": ""}, "e28_4": {"value": "09H00-17H00", "note": ""}, "e28_5": {"value": "09H00-17H00", "note": ""}, "e28_6": {"value": "OFF", "note": ""}, "e29_0": {"value": "15H00-23H00", "note": ""}, "e29_1": {"value": "15H00-23H00", "note": ""}, "e29_2": {"value": "OFF", "note": ""}, "e29_3": {"value": "15H00-23H00", "note": ""}, "e29_4": {"value": "15H00-23H00", "note": ""}, "e29_5": {"value": "15H00-23H00", "note": ""}, "e29_6": {"value": "15H00-23H00", "note": ""}, "e30_0": {"value": "at", "note": ""}, "e30_1": {"value": "at", "note": ""}, "e30_2": {"value": "at", "note": ""}, "e30_3": {"value": "at", "note": ""}, "e30_4": {"value": "at", "note": ""}, "e30_5": {"value": "at", "note": ""}, "e30_6": {"value": "at", "note": ""}, "e31_0": {"value": "09H00-17H00", "note": ""}, "e31_1": {"value": "OFF", "note": ""}, "e31_2": {"value": "09H00-17H00", "note": ""}, "e31_3": {"value": "09H00-17H00", "note": ""}, "e31_4": {"value": "09H00-17H00", "note": ""}, "e31_5": {"value": "09H00-17H00", "note": ""}, "e31_6": {"value": "09H00-17H00", "note": ""}, "e32_0": {"value": "OFF", "note": ""}, "e32_1": {"value": "09H00-17H00", "note": ""}, "e32_2": {"value": "09H00-17H00", "note": ""}, "e32_3": {"value": "09H00-17H00", "note": ""}, "e32_4": {"value": "09H00-17H00", "note": ""}, "e32_5": {"value": "09H00-17H00", "note": ""}, "e32_6": {"value": "09H00-17H00", "note": ""}, "e33_0": {"value": "09H00-17H00", "note": ""}, "e33_1": {"value": "09H00-17H00", "note": ""}, "e33_2": {"value": "09H00-17H00", "note": ""}, "e33_3": {"value": "09H00-17H00", "note": ""}, "e33_4": {"value": "OFF", "note": ""}, "e33_5": {"value": "09H00-17H00", "note": ""}, "e33_6": {"value": "09H00-17H00", "note": ""}, "e34_0": {"value": "15H00-23H00", "note": ""}, "e34_1": {"value": "15H00-23H00", "note": ""}, "e34_2": {"value": "OFF", "note": ""}, "e34_3": {"value": "15H00-23H00", "note": ""}, "e34_4": {"value": "15H00-23H00", "note": ""}, "e34_5": {"value": "15H00-23H00", "note": ""}, "e34_6": {"value": "15H00-23H00", "note": ""}, "e35_0": {"value": "09H00-17H00", "note": ""}, "e35_1": {"value": "09H00-17H00", "note": ""}, "e35_2": {"value": "15H00-23H00", "note": ""}, "e35_3": {"value": "OFF", "note": ""}, "e35_4": {"value": "09H00-17H00", "note": ""}, "e35_5": {"value": "09H00-17H00", "note": ""}, "e35_6": {"value": "09H00-17H00", "note": ""}, "e36_0": {"value": "09H00-17H00", "note": ""}, "e36_1": {"value": "09H00-17H00", "note": ""}, "e36_2": {"value": "09H00-17H00", "note": ""}, "e36_3": {"value": "09H00-17H00", "note": ""}, "e36_4": {"value": "09H00-17H00", "note": ""}, "e36_5": {"value": "09H00-17H00", "note": ""}, "e36_6": {"value": "OFF", "note": ""}}, "planWeekStart": "2026-06-15T00:00:00.000Z"};
@@ -1085,10 +1114,12 @@ function renderEvents(c) {
 
 function renderFeries() {
   const now = new Date().toISOString().split('T')[0];
-  let html = `<div class="section-title">2025</div>`;
-
+  let html = '';
   let currentYear = '';
-  ALL_FERIES.forEach(f => {
+
+  const sortedFeries = [...ALL_FERIES].sort((a,b) => a.date.localeCompare(b.date));
+
+  sortedFeries.forEach(f => {
     const year = f.date.split('-')[0];
     if (year !== currentYear) {
       if (currentYear) html += `<div style="height:8px"></div>`;
@@ -1101,9 +1132,74 @@ function renderFeries() {
       <div class="ferie-date">${formatDate(f.date)}</div>
       <div class="ferie-name">${f.nom}</div>
       <div class="ferie-type ${f.type}">${f.type === 'nat' ? 'National' : 'Religieux'}</div>
+      <div style="display:flex;gap:4px;margin-left:auto;flex-shrink:0">
+        <button onclick="openEditFerie('${f.id||f.date}')" style="background:var(--surface2);border:1px solid var(--border);color:var(--gold);border-radius:4px;padding:3px 7px;cursor:pointer;font-size:11px">✏️</button>
+        <button onclick="deleteFerie('${f.id||f.date}')" style="background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:4px;padding:3px 7px;cursor:pointer;font-size:11px">✕</button>
+      </div>
     </div>`;
   });
+
+  html += `<div style="margin-top:14px">
+    <button onclick="openAddFerie()" style="width:100%;padding:12px;background:var(--gold);color:var(--bg);border:none;border-radius:var(--radius-sm);font-weight:800;font-size:14px;cursor:pointer">+ Ajouter un Jour Férié</button>
+  </div>`;
   return html;
+}
+
+function openAddFerie() {
+  document.getElementById('ferieNom').value = '';
+  document.getElementById('ferieDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('ferieType').value = 'nat';
+  document.getElementById('ferieEditId').value = '';
+  document.getElementById('ferieModal').classList.add('open');
+}
+
+function openEditFerie(id) {
+  const f = ALL_FERIES.find(x => (x.id||x.date) === id);
+  if (!f) return;
+  document.getElementById('ferieNom').value = f.nom;
+  document.getElementById('ferieDate').value = f.date;
+  document.getElementById('ferieType').value = f.type;
+  document.getElementById('ferieEditId').value = id;
+  document.getElementById('ferieModal').classList.add('open');
+}
+
+function saveFerie() {
+  const nom = document.getElementById('ferieNom').value.trim();
+  const date = document.getElementById('ferieDate').value;
+  const type = document.getElementById('ferieType').value;
+  const editId = document.getElementById('ferieEditId').value;
+  if (!nom || !date) { alert('Nom et date requis !'); return; }
+
+  if (editId) {
+    const f = ALL_FERIES.find(x => (x.id||x.date) === editId);
+    if (f) { f.nom = nom; f.date = date; f.type = type; f.id = editId; }
+  } else {
+    ALL_FERIES.push({ id: uid(), date, nom, type });
+  }
+  saveFeries();
+  closeModal('ferieModal');
+  render();
+}
+
+function deleteFerie(id) {
+  if (!confirm('Supprimer ce jour férié ?')) return;
+  const idx = ALL_FERIES.findIndex(x => (x.id||x.date) === id);
+  if (idx >= 0) ALL_FERIES.splice(idx, 1);
+  saveFeries();
+  render();
+}
+
+function saveFeries() {
+  localStorage.setItem('cp_feries', JSON.stringify(ALL_FERIES));
+}
+
+function loadFeries() {
+  const d = localStorage.getItem('cp_feries');
+  if (d) {
+    const saved = JSON.parse(d);
+    ALL_FERIES.length = 0;
+    saved.forEach(f => ALL_FERIES.push(f));
+  }
 }
 
 function renderRecap() {
@@ -1715,6 +1811,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 
 // ===== INIT =====
 load();
+loadFeries();
 render();
 </script>
 </body>
