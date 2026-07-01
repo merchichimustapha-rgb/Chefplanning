@@ -631,6 +631,7 @@
     <div class="header-actions">
       <div class="icon-btn" onclick="openImportModal()" title="Importer Excel/CSV">📥</div>
       <div class="icon-btn" onclick="exportData()" title="Exporter">📤</div>
+      <div class="icon-btn" onclick="autoApplyConges()" title="Ajouter congés automatiques" style="color:var(--green)">📆</div>
     </div>
   </div>
   <div class="tabs">
@@ -1304,7 +1305,8 @@ function renderPlanning() {
     <button class="week-nav-btn" onclick="planPrevWeek()">◀</button>
     <div class="week-label-plan">${fmtDate(state.planWeekStart)} → ${fmtDate(end)}</div>
     <button class="week-nav-btn" onclick="planNextWeek()">▶</button>
-    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">Excel</button>
+    <button onclick="exportPlanningExcel()" style="padding:6px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--gold);background:var(--gold);color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">🖨️ Partager</button>
+    <button onclick="autoApplyFeries()" style="padding:6px 10px;border-radius:var(--radius-sm);border:1.5px solid #C8A800;background:transparent;color:#C8A800;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap">🌟 Fériés Auto</button>
   </div>
 
   <div class="conge-bar">
@@ -1487,6 +1489,97 @@ function savePlanShift() {
 
   save();
   closeModal('planShiftModal');
+  render();
+}
+
+
+// ===== AUTO CALCUL JOURS FERIES & CONGES =====
+
+function autoApplyFeries() {
+  // For each week of planning shifts, check if any day is a ferie
+  // If employee was working (not OFF, not empty) → add ferie event
+  let added = 0;
+
+  // Get all shift keys
+  Object.entries(state.planShifts).forEach(([key, sh]) => {
+    const [empId, dayIdxRaw] = key.split('_');
+    const val = (sh.value || '').toUpperCase();
+
+    // Skip if already J.FERIE or OFF or empty
+    if (!val || val === 'OFF' || val.includes('FERIE') || val.includes('FÉRIÉ')) return;
+    if (val.includes('CONGE') || val.includes('CONGÉ') || val === 'MALADIE' || val === 'AT') return;
+
+    // Find which actual date this is
+    // We need to find the week this shift belongs to
+    // planShifts keys are empId_dayIndex (0-6 relative to planWeekStart)
+    // But we may have shifts from multiple weeks - we store week in key
+    // Current implementation only stores one week at a time
+    // So we use current planWeekStart
+    const dayIdx = parseInt(dayIdxRaw);
+    const date = addDays(state.planWeekStart, dayIdx);
+    const dateStr = date.toISOString().split('T')[0];
+
+    // Check if this date is a ferie
+    const ferie = ALL_FERIES.find(f => f.date === dateStr);
+    if (!ferie) return;
+
+    // Find the employee
+    const c = state.cuisiniers.find(x => x.id === empId);
+    if (!c) return;
+    if (!c.events) c.events = [];
+
+    // Check if already added for this date
+    const exists = c.events.find(e => e.date === dateStr && e.type === 'ferie');
+    if (exists) return;
+
+    // Add ferie event
+    c.events.push({
+      id: uid(),
+      type: 'ferie',
+      date: dateStr,
+      dateFin: dateStr,
+      desc: ferie.nom,
+      jours: 1,
+      source: 'auto'
+    });
+    added++;
+  });
+
+  save();
+  if (added > 0) {
+    alert('[OK] ' + added + ' jour(s) férié(s) ajouté(s) automatiquement !');
+  } else {
+    alert('Aucun nouveau jour férié à ajouter pour cette semaine.');
+  }
+  render();
+}
+
+function autoApplyConges() {
+  // Add 1.5 congé per month worked for each employee
+  // Ask user how many months
+  const months = parseFloat(prompt('Nombre de mois de travail à ajouter :\n(Ex: 1 = 1.5 jours, 2 = 3 jours)', '1'));
+  if (isNaN(months) || months <= 0) return;
+
+  const joursConge = months * 1.5;
+  const dateStr = new Date().toISOString().split('T')[0];
+  let added = 0;
+
+  state.cuisiniers.forEach(c => {
+    if (!c.events) c.events = [];
+    c.events.push({
+      id: uid(),
+      type: 'repos-pris',
+      date: dateStr,
+      dateFin: dateStr,
+      desc: 'Congé annuel (' + months + ' mois × 1.5j)',
+      jours: joursConge,
+      source: 'auto-conge'
+    });
+    added++;
+  });
+
+  save();
+  alert('[OK] ' + joursConge + ' jour(s) de congé ajoutés à ' + added + ' employé(s) !');
   render();
 }
 
