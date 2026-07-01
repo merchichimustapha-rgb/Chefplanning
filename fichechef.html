@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>FicheChef — Fiches techniques &amp; allergènes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0c'/%3E%3Cpath d='M20 30 Q20 14 32 12 Q44 14 44 30 Z' fill='%23facc15'/%3E%3Crect x='18' y='28' width='28' height='8' rx='3' fill='%23facc15'/%3E%3Crect x='14' y='44' width='36' height='10' rx='3' fill='%235b21b6'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAG4ElEQVR4nO3dO7IbRRiG4V+UE59yQMZu2AMBpBQro0ghYA/eDZkDlQhNgMeeozOX7unLf3ufDAqOWqPv6+4ZjaSbGPPy8uGz9hgwzuNxv2mPYU11MIQdIrqlmP7AhB5HZpdh2oMRfNSYVYThD0Lw0WJ0EYb9cYKPnkYVofsfJfgYqXcRvuv5xwg/RuudsS5tIvjQ0GM1aF4BCD+09MheUwEIP7S1ZvByAQg/rGjJ4qUCEH5YczWT1QUg/LDqSjarCkD4YV1tRosLQPjhRU1WiwpA+OFNaWZPC0D44VVJdrveCgF4c1gAZn94d5bh3QIQfkRxlGW2QEhtswDM/ohmL9OsAEjtTQGY/RHVVrZZAZDaqwIw+yO654yzAiC1rwVg9kcW66yzAiC1d9oDyOLTx/fV/8/3P/47YCRYu4mw/entSthLUYp+Ho/7jQJ0MDLwZyjEdRSggWbo91CGOhTgAovBf0YRylCACh6C/4wiHHs87rcb4T/mMfjPKMI+3gc4ECH8InGexwisABsiB4bV4DVWgCeRwy8S//nVogArWcKR5XmWoABfZAtFtue7hwJI3jBkfd5r6QuQPQTZn3/qAmR/8ReZj0PaAmR+0bdkPR4pC5D1xT6T8bikK0DGF7lGtuOTrgDAWqoCZJvdrsp0nNIUINOL2kOW45WmAMCWFAXIMpv1luG4pSgAsCd8ATLMYiNFP37hCwAcoQBILXQBoi/fs0Q+jqELAJyhAEiNAiC1sAWIvG/VEPV4hi0AUIICIDUKgNQoAFKjAEiNAiA1CoDUKABSowBIjQIgtbAF4JdQ+op6PMMWAChBAZAaBUBqoQsQdd86W+TjGLoAwBkKgNTCFyDy8j1D9OMXvgDAkRQFiD6LjZLhuKUoALAnRQGifqPBaBmOW/gCZHgRR4p+/MIXADgSugDRZ69ZIh/H0AUAzoQtQORZS0PU4xm2AEAJCoDUKABSowBIjQIgNQqA1CgAUqMASI0CIDUKgNQoAFKjAEiNAiC128vLh8/agxgl6h2MVnn8EP077QEgjucJx0MhQq8AIqwCVlgtA+cAmOLTx/cmJ6PwK4AIq4BFVlaEFAVYUAR7tIuQqgALilCuJqBXj6tmCVIWIJuaYPYMo9bj1qAAgVkJoJVxbKEAQZWGbmbgLI6JAgRUEjTNfbel8fE+QDCWwtXy+LMuVFCAZLTDv7AyDrZAgRzNmlYCt0Vz3KwAQXgNv8jx+EZvhShAANHf2Bv5/ChAcNZn/4XWOCmAc563Ps80tkIUICgr4V9ug7b4JpgIBXDN+t7/eXyt4x3xfClAQBZm/72wWnujjgI4ZX32H6X386YAwVie/WtwLxBcOgu/hYKuUQCH9kKmHa7e4d/773tugygAptAu5x4KgC68npRTADTztu9fowDOWNv/jw7/6PMACoBhLM/8ixBfjvvTD39qD2GiX7UH8JXXff+a6wLkCn67dWBbZ2fP+/41lwUg+PW2bky7GtIo4RdxeA5A+Ou13JhWy1P4RRwWAH3VliDCvn/NVQGY/ccoDXWkrc/CVQFwTY8voooYfhFHBWD2bzPy29i8hl/EUQHQ7moJou371yiAM7/9/Mfmv+/5ofP139Le+oy+9YMCJFRaAu3wz0ABkhp1k5o3FCCxKCFuQQEcaj0PWLtSglnFmXHrNwVAVaCirRoUIJiR1/It/p5YKwrg1N42qIWH2b33GClAQC2z517AIs7+IhTAtRGrgMjbsFtZGUaMw+UHYnCu5QMvInY/ZN8bK4BzR6uAt3t4NH7sgwIE56UEWuOkAAGMOhewYuR2jAIE4XkrpPk7ZzcRES8/ls2HYs79/tfx9wZZuaIjon+r9eNxv7ECJGNlNbAyDlcF+PufX7SHYF7J+YB2+Cz9TpirAqBMaQlmF6H0MWdu01ydAyw4Fyhzdj6wNjJ0NUWbGf7H4367Lf/grQQiFKGUVhGsBl/k//CLfFkBRHwWYEERztWUYK0mmJ6+ViVUAVBG++R3i9Zl2TcFEKEEWVgogub7EUv4RShAahpFsPBG3G4BRChBRjOKYCH4Iq/DL0IB8KRnGayEfu20ACKUAN9YvpRZ6zn8IhQAiWwVYPNWiK3/EPBsL9PcC4TUdgvAKoAojrJ8uAJQAnh3lmG2QEjttACsAvCqJLtFKwAlgDelmS3eAlECeFGT1apzAEoA62ozWn0STAlg1ZVsXroKRAlgzdVMXr4MSglgRUsWm94HoATQ1prB5jfCKAG09Mhe1/ByGzVm6Dnpdr0VgtUAo/XO2LDAshqgp1GT6/AZmyKgxehdxbQtC0VAjVnb6el7doqAI7PPI1VPWikDRHQvnpi7akMpYrN2pfA/eiquJF5XWmcAAAAASUVORK5CYII=">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FicheChef">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIkZpY2hlQ2hlZiDigJQgRmljaGVzIHRlY2huaXF1ZXMgJiBhbGxlcmfDqG5lcyIsICJzaG9ydF9uYW1lIjogIkZpY2hlQ2hlZiIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTBjIiwgInRoZW1lX2NvbG9yIjogIiMwYTBhMGMiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFNQUFBQURBQ0FZQUFBQlMzR3dIQUFBRzRFbEVRVlI0bk8zZE83SWJSUmlHNFYrVUU1OXlRTVp1MkFNQnBCUXJvMGdoWUEvZURaa0RsUWhOZ01lZW96T1g3dW5MZjN1ZkRBcU9XcVB2Nis0WmphU2JHUFB5OHVHejloZ3d6dU54djJtUFlVMTFNSVFkSXJxbG1QN0FoQjVIWnBkaDJvTVJmTlNZVllUaEQwTHcwV0owRVliOWNZS1Bua1lWb2ZzZkpmZ1lxWGNSdnV2NXh3Zy9SdXVkc1M1dEl2alEwR00xYUY0QkNEKzA5TWhlVXdFSVA3UzFadkJ5QVFnL3JHako0cVVDRUg1WWN6V1QxUVVnL0xEcVNqYXJDa0Q0WVYxdFJvc0xRUGpoUlUxV2l3cEErT0ZOYVdaUEMwRDQ0VlZKZHJ2ZUNnRjRjMWdBWm45NGQ1YmgzUUlRZmtSeGxHVzJRRWh0c3dETS9vaG1MOU9zQUVqdFRRR1kvUkhWVnJaWkFaRGFxd0l3K3lPNjU0eXpBaUMxcndWZzlrY1c2Nnl6QWlDMWQ5b0R5T0xUeC9mVi84LzNQLzQ3WUNSWXU0bXcvZW50U3RoTFVZcCtIby83alFKME1ETHdaeWpFZFJTZ2dXYm85MUNHT2hUZ0FvdkJmMFlSeWxDQUNoNkMvNHdpSEhzODdyY2I0VC9tTWZqUEtNSSszZ2M0RUNIOEluR2V4d2lzQUJzaUI0YlY0RFZXZ0NlUnd5OFMvL25Wb2dBcldjS1I1WG1Xb0FCZlpBdEZ0dWU3aHdKSTNqQmtmZDVyNlF1UVBRVFpuMy9xQW1SLzhSZVpqMFBhQW1SKzBiZGtQUjRwQzVEMXhUNlQ4YmlrSzBER0Y3bEd0dU9UcmdEQVdxb0NaSnZkcnNwMG5OSVVJTk9MMmtPVzQ1V21BTUNXRkFYSU1wdjFsdUc0cFNnQXNDZDhBVExNWWlORlAzN2hDd0Fjb1FCSUxYUUJvaS9mczBRK2pxRUxBSnloQUVpTkFpQzFzQVdJdkcvVkVQVjRoaTBBVUlJQ0lEVUtnTlFvQUZLakFFaU5BaUExQ29EVUtBQlNvd0JJalFJZ3RiQUY0SmRRK29wNlBNTVdBQ2hCQVpBYUJVQnFvUXNRZGQ4NlcrVGpHTG9Bd0JrS2dOVENGeUR5OGoxRDlPTVh2Z0RBa1JRRmlENkxqWkxodUtVb0FMQW5SUUdpZnFQQmFCbU9XL2dDWkhnUlI0cCsvTUlYQURnU3VnRFJaNjlaSWgvSDBBVUF6b1F0UU9SWlMwUFU0eG0yQUVBSkNvRFVLQUJTb3dCSWpRSWdOUXFBMUNnQVVxTUFTSTBDSURVS2dOUW9BRktqQUVpTkFpQzEyOHZMaDgvYWd4Z2w2aDJNVm5uOEVQMDc3UUVnanVjSngwTWhRcThBSXF3Q1ZsZ3RBK2NBbU9MVHgvY21KNlB3SzRBSXE0QkZWbGFFRkFWWVVBUjd0SXVRcWdBTGlsQ3VKcUJYajZ0bUNWSVdJSnVhWVBZTW85YmoxcUFBZ1ZrSm9KVnhiS0VBUVpXR2JtYmdMSTZKQWdSVUVqVE5mYmVsOGZFK1FEQ1d3dFh5K0xNdVZGQ0FaTFREdjdBeURyWkFnUnpObWxZQ3QwVnozS3dBUVhnTnY4angrRVp2aFNoQUFOSGYyQnY1L0NoQWNOWm4vNFhXT0NtQWM1NjNQczgwdGtJVUlDZ3I0Vjl1ZzdiNEpwZ0lCWEROK3Q3L2VYeXQ0eDN4ZkNsQVFCWm0vNzJ3V251ampnSTRaWDMySDZYMzg2WUF3VmllL1d0d0x4QmNPZ3UvaFlLdVVRQ0g5a0ttSGE3ZTRkLzc3M3R1Z3lnQXB0QXU1eDRLZ0M2OG5wUlRBRFR6dHU5Zm93RE9XTnYvanc3LzZQTUFDb0JoTE0vOGl4QmZqdnZURDM5cUQyR2lYN1VIOEpYWGZmK2E2d0xrQ242N2RXQmJaMmZQKy80MWx3VWcrUFcyYmt5N0d0SW80UmR4ZUE1QStPdTEzSmhXeTFQNFJSd1dBSDNWbGlEQ3ZuL05WUUdZL2Njb0RYV2tyYy9DVlFGd1RZOHZvb29ZZmhGSEJXRDJielB5MjlpOGhsL0VVUUhRN21vSm91MzcxeWlBTTcvOS9NZm12Ky81b2ZQMTM5TGUrb3krOVlNQ0pGUmFBdTN3ejBBQmtocDFrNW8zRkNDeEtDRnVRUUVjYWowUFdMdFNnbG5GbVhIck53VkFWYUNpclJvVUlKaVIxL0l0L3A1WUt3cmcxTjQycUlXSDJiMzNHQ2xBUUMyejUxN0FJczcrSWhUQXRSR3JnTWpic0Z0WkdVYU13K1VIWW5DdTVRTXZJblkvWk44Yks0QnpSNnVBdDN0NE5IN3Nnd0lFNTZVRVd1T2tBQUdNT2hld1l1UjJqQUlFNFhrcnBQazdaemNSRVM4L2xzMkhZczc5L3RmeDl3Wlp1YUlqb24rcjllTnh2N0VDSkdObE5iQXlEbGNGK1B1Zlg3U0hZRjdKK1lCMitDejlUcGlyQXFCTWFRbG1GNkgwTVdkdTAxeWRBeXc0RnloemRqNndOakowTlVXYkdmN0g0MzY3TGYvZ3JRUWlGS0dVVmhHc0JsL2svL0NMZkZrQlJId1dZRUVSenRXVVlLMG1tSjYrVmlWVUFWQkcrK1IzaTlabDJUY0ZFS0VFV1Znb2d1YjdFVXY0UlNoQWFocEZzUEJHM0c0QlJDaEJSak9LWUNINElxL0RMMElCOEtSbkdheUVmdTIwQUNLVUFOOVl2cFJaNnpuOEloUUFpV3dWWVBOV2lLMy9FUEJzTDlQY0M0VFVkZ3ZBS29Bb2pySjh1QUpRQW5oM2xtRzJRRWp0dEFDc0F2Q3FKTHRGS3dBbGdEZWxtUzNlQWxFQ2VGR1QxYXB6QUVvQTYyb3pXbjBTVEFsZzFaVnNYcm9LUkFsZ3pkVk1YcjRNU2dsZ1JVc1dtOTRIb0FUUTFwckI1amZDS0FHMDlNaGUxL0J5R3pWbTZEbnBkcjBWZ3RVQW8vWE8yTERBc2hxZ3AxR1Q2L0FabXlLZ3hlaGR4YlF0QzBWQWpWbmI2ZWw3ZG9xQUk3UFBJMVZQV2lrRFJIUXZucGk3YWtNcFlyTjJwZkEvZWlxdUpGNVhXbWNBQUFBQVNVVk9SSzVDWUlJPSIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIn0sIHsic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBWUFBQUQwZU5UNkFBQVV5a2xFUVZSNG5PM2RPM0ljU1pZRlVFY1pGY0pLb05hNzRSNWFtRkhiWm1WdG8vWUl2UWZ1cGpVS05GRGtDR1FXRWtSK0lpUDg4OXpmT2VKWU5TZlM0M092djBnQVQ0V1FucC8vL0RINkdBQnFlSG41OWpUNkdIalBTUmxFd0FQOHBDQ01ZZEU3RVBZQWoxRUsyclBBRFFoOGdMb1Vndm9zYUFVQ0g2QXZoZUE0QzdpVDBBZUlRUm5ZeDZJOVFPZ0R4S1lNYkdlaDdoRDZBSE5TQm02ek9GY0lmb0ExS0FLWFdaUXpRaDlnYmNyQUt3dFJCRDlBTm9wQThnSWcrQUZ5eTF3RVVuNXd3US9BdVl4RklOVUhGdndBM0pLcENLVDRvSUlmZ0Vka0tBSi9qRDZBMW9RL0FJL0trQjNMTnB3TUp3K0E5bGFkQml6M29RUS9BQzJzVmdTV2VnVWcvQUZvWmJXTVdhTE5ySFpTQUlodGhXbkE5Qk1BNFE5QWJ5dGt6OVFGWUlVVEFNQ2NacytnS1VjWXN5ODZBR3VaOFpYQWRCTUE0UTlBTkRObTAxUUZZTVlGQmlDSDJUSnFpcEhGYklzS1FHNHp2QklJUHdFUS9nRE1ab2JzQ2wwQVpsaEFBTGdrZW9hRkxRRFJGdzRBN29tY1pTRUxRT1FGQTRCSFJNMjBjQVVnNmtJQndGNFJzeTFVQVlpNFFBQlFRN1NNQzFNQW9pME1BTlFXS2V0Q0ZJQklDd0lBTFVYSnZPRUZJTXBDQUVBdkViSnZhQUdJc0FBQU1NTG9EQnhXQUVaL2NBQVliV1FXRGlrQXdoOEFmaHFWaWQwTGdQQUhnTGRHWkdQWEFpRDhBZUN5M2huWnJRQUlmd0M0cldkV2Rpa0F3aDhBdHVtVm1jTi9Ed0FBMEYvekFtRDNEd0NQNlpHZFRRdUE4QWVBZlZwbmFMTUNJUHdCNEppV1dlbzdBQUNRVUpNQ1lQY1BBSFcweXRUcUJVRDRBMEJkTGJLMWFnRVEvZ0RRUnUyTTlSMEFBRWlvV2dHdyt3ZUF0bXBtYlpVQ0lQd0JvSTlhbWVzVkFBQWtkTGdBMlAwRFFGODFzdGNFQUFBU09sUUE3UDRCWUl5akdieTdBQWgvQUJqclNCWjdCUUFBQ2UwcUFIYi9BQkREM2t3MkFRQ0FoQjR1QUhiL0FCRExubXcyQVFDQWhCNHFBSGIvQUJEVG94bHRBZ0FBQ1cwdUFIYi9BQkRiSTFsdEFnQUFDVzBxQUhiL0FEQ0hyWmx0QWdBQUNTa0FBSkRRM1FKZy9BOEFjOW1TM1NZQUFKRFF6UUpnOXc4QWM3cVg0U1lBQUpDUUFnQUFDVjB0QU1iL0FEQzNXMWx1QWdBQUNTa0FBSkRReFFKZy9BOEFhN2lXNlNZQUFKRFFoOUVIQU5UMTljdkhadi8ycDgvZm0vM2JRRjlQdi84ZmpQOGh0cFlCZjVTQ0FIRzl2SHg3ay9rS0FBUVZPZWdmcFJqQWVBb0FCTFZTNE4rakVFQi9DZ0FFa1NudzcxRUlvTDJiQlVENFF6c0NmenVGQU5vNEx3RUtBRFFrOUk5VEJxQWVCUUFhRXZydEtBTndqQUlBbFFuOS9wUUJlTnpGQWlEODRYR0NmenhGQUI1ektnRUtBT3dnK09OUkJHQWJCUUFlSlBUbm9RekFkUW9BYkNUNDU2VUl3SHNLQU53aCtOZWhDTUNyTndWQStNTXJ3Yjh1UlFCK2VubjU5cVFBd0MrQ1B3OUZnT3hlWHI0OS9USDZJQ0FDNForTDh3MWVBWkNjSU1BMGdJeThBaUF0d2MvdkZBRXk4UXFBbElRL2w3Z3V5TVlFZ0RRODRObktOSURWbVFDUWh2RG5FYTRYTW5peSsyZGxIdVFjWlJyQXFrd0FXSmJ3cHdiWEVhdFNBRmlTaHpZMXVaNVlrVmNBTE1XRG10YThFbUFWSmdBc1EvalRnK3VNVlNnQUxNRkRtWjVjYjZ4QUFXQjZIc2FNNExwamRnb0FVL01RWmlUWEh6TlRBSmlXaHk4UnVBNlpsUUxBbER4MGljVDF5SXdVQUtiallVdEVya3RtNC9jQU1BMFBXR2JoZHdVd0F4TUFwaUQ4bVlucmxSa29BQUNRa0FKQWVIWlR6TWgxUzNRS0FLRjVpREl6MXkrUktRQ0U1ZUhKQ2x6SFJLVUFFSktISml0eFBST1JBa0E0SHBhc3lIVk5OQW9Bb1hoSXNqTFhONUVvQUlUaDRVZ0dybk9pVUFBQUlDRUZnQkRzaXNqRTlVNEVDZ0REZVJpU2tldWUwUlFBaHZJUUpEUFhQeU1wQUFDUWtBTEFNSFkvNEQ1Z0hBV0FJVHowNEpYN2dSRVVBQUJJU0FHZ083c2RlTTk5UVc4S0FGMTV5TUYxN2c5NlVnQUFJQ0VGZ0c3c2J1QSs5d205S0FBQWtKQUNRQmQyTmJDZCs0VWVGQUFBU0VnQm9EbTdHWGljKzRiV0ZBQUFTRWdCb0NtN0dOalAvVU5MQ2dBQUpLUUEwSXpkQ3h6blBxSVZCUUFBRWxJQWFNS3VCZXB4UDlHQ0FnQUFDU2tBQUpDUUFrQjF4cFZRbi91SzJoUUFBRWhJQVFDQWhCUUFxakttaEhiY1g5U2tBQUJBUWdvQUFDU2tBRkNOOFNTMDV6NmpGZ1VBQUJKU0FBQWdJUVdBS293bG9SLzNHelVvQUFDUWtBSUFBQWtwQUFDUWtBSUFBQWtwQUJ6bUMwblFuL3VPb3hRQUFFaElBUUNBaEJRQUFFaElBUUNBaEJRQUFFaElBZUFRMzBTR2NkeC9IS0VBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBQUVCQ0NnQUFKS1FBY01pbno5OUhId0trNWY3akNBVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQURqTU41R2hQL2NkUnlrQUFKQ1FBZ0FBQ1NrQUFKQ1FBZ0FBQ1NrQVZPRUxTZENQKzQwYUZBQUFTRWdCQUlDRUZBQ3FNWmFFOXR4bjFLSUFBRUJDQ2dBQUpLUUFVSlh4SkxUai9xSW1CUUFBRWxJQUFDQWhCWURxakNtaFB2Y1Z0U2tBQUpDUUFnQUFDU2tBTkdGY0NmVzRuMmhCQVFDQWhCUUFtckZyZ2VQY1I3U2lBQUJBUWdvQVRkbTl3SDd1SDFwU0FBQWdJUVdBNXV4aTRISHVHMXBUQUFBZ0lRV0FMdXhtWUR2M0N6MG9BQUNRa0FKQU4zWTFjSi83aEY0VUFMcjUrdVhqNkVPQThOd245UEwwL1B6bmo5RUh3ZG84MEdBZjB3QmFNZ0dnS2VFUCs3bC9hRWtCb0JrUEx6ak9mVVFyQ2dCTmVHaEJQZTRuV2xBQXFNN0RDdXB6WDFHYkFnQUFDU2tBVkdXWEF1MjR2NmhKQWFBYUR5ZG96MzFHTFFvQUFDU2tBRkNGWFFuMDQzNmpCZ1VBQUJKU0FEak1iZ1Q2Yzk5eGxBSUFBQWtwQUFDUWtBSUFBQWtwQUJ6aVBTU000LzdqQ0FVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFVQUFCSlNBQUFnSVFXQVF6NTkvajc2RUNBdDl4OUhLQUFBa0pBQ0FBQUpmUmg5QUFEczgvWEx4eXIvamxjSk9UMDlQLy81WS9SQk1MOWFEeUlnRnVWZ1hTWUFBRnoxZTdsWENOWmhBa0ExcGdDUWowSXdMeE1BQUhZN0wvN0t3RnhNQUtqS0ZBQW9SUm1ZZ1FKQWRVb0FjRTRaaU1udkFRQ2dxYTlmUHRvWUJHUUNRQk51ZHVBYUU0RVlGQUNhVVFLQVd4U0JzUlFBbWxJQ2dIc1VnVEVVQUpwVEFvQXRGSUcrRkFDNlVRU0FMUlNCUHZ3VUFOMjRxWUV0YkJiNk1BRmdDRGM0c0lXTlF6c0tBRU1wQXNBOVNrQWJDZ0NoS0FTd1hZMWduT21lVXdUcVVnQUFmb2thaGlPQ3oxcXNUd0VBS0xFQ0wyTElXWi8xS0FCQWFoR0NiY1pBczI3elV3Q0F0RWFHMkVyaFpSM25wQUFBS1kwS3JaVUR5NXJPUlFFQTB1a2RWQmtEeWhySHB3QUFxZlFNSnFGa3ZTTlRBSUEwZW9XUklIclAyc2VqQUFBcDlBZ2c0WE9mOHhDSFB3WUVMRS9veE5Gam5TTDhpT0lNVEFDQXBiVU9BOEcvbjNNemxna0FzQ3dCRTF2cjlUTUp1TTBFQUZoU3k0ZS80Sy9QK2VyUEJBQllqakNaVDh0MU5RbTRUQUVBbGlMODU2VUU5T1VWQUxDTVZnOTV3ZCtmYzltZUNRQ3dCSUd4bGxicmJoTHdTZ0VBdUVMNGoyWDkyMUlBZ09tMTJOVUpueGhhbkFkVGdKOFVBR0Jxd245OVNrQWJDZ0F3TGVHZmh4SlFud0lBOEl2d2o4MzVxVXNCQUtaVWUvY21YT1pRK3p4bG5nSW9BTUIwaEg5dVNrQWRDZ0NRbXZDZmsvTjJuQUlBVEtYbWJrMkl6SzNtK2NzNEJWQUFnR2xrZkVqVFQ3YnJTd0VBVXJMN1g0UHp1SjhDQUV6QjZKOXJ2QXJZNThQb0F3RG9TZmkzZFN0QVc2NzlwOC9mVTRWM0RTWUFRSGdlN1BGOS9mTHg3bm5hOHQ5RU1NTXgxcUFBQUduWS9iZnhhR0Q2MDgweEtBQkFhTFhDUWppMHNmZjhSQzhCR2FZQUNnQUF1eHdOeVF3aEc1a0NBSVJsOXg5WHJYTVQrUzg2cmw1UUZBQmdhY0kvSitmOVBnVUFDR24xM2RmTWFwK2J5T2M2OHJFZHBRQUF5N0lMek0zNXYwMEJBTUpaZWRjMXU0em5adFhQckFBQVM3TDdxMi9HSUhRZFhLY0FBRUJDQ2dBUVNvMWRwbDFmZlRQdS9rOXFYQTh6Zi81ckZBQUFibG94L0ZBQUFMaWhSL2liMkl5aEFBQmhHUC9UaXRjQTd5a0FBRnhrOTc4MkJRQlloakNwWjhYd2QzMjhwUUFBSWF3MlhwM1ppdUZmeTByWHFRSUFRRmV6aHY5cUZBQmdDVUtsanRZNzNOSG5hZlQvLzBnVUFBQktLZXVIUDI4cEFNQndLNzFYblpYdzMyNlY2MVVCQUlDRUZBQmdlaXZ0TGtmSXR2dVBkanlqS0FBQWlXVUxmMTRwQU1CUXE3eFBuWkh3MzIrRjYxWUJBSUNFRkFCZ2FpdnZNbHZLdnZ1UGZudzlLQUFBeVdRUGYzNVNBQUFTRWY2Y0tBQUFrSkFDQUpDRTNUL25GQUJnbUJWK2xHb1d3cisrMmEvZkQ2TVBnRmorL3JkL2pUNEVVdm5Ib2Y5MXh0RFpRL2hmOXVuejkrbEQvQWdGSURtQkQ1Q1RBcENVNElkdGJ1MFFaOWo1MnYxempRS1FqT0NIYmJZRTUrbS9pUnFDd3A5YmZBa3dFZUVQMnp3YW5CSGZJd3QvN2pFQlNFRHd3M1o3Zy9Qcmw0OUNrYW1ZQUN4TytNTjJSM2ZOVVNZQmR2OXNvUUFzVFBqRGRyVkNjM1FKRVA1c3BRQXNTdmhEUHNLZlJ5Z0FDeEwrOEpqYXdUbDZDZ0JiS0FBQURmUXVBWGIvUEVvQldJemRQOFRScXdRSWYvWlFBQllpL0NHZTF1RXMvTmxMQVFCb3pIY0NpRWdCV0lUZFA4VFdvZ1RZL1hPRUFnRFFTYzNBRnY0Y3BRQXN3TzRmanVrWmRqV0NXL2hUZ3dJQVRHdldkK3V6SHZkcXNwOEhCUUFZNW4vKzYzOUhIOEpmZXU5NmovelJvWmJzL3JlYmZhMFVBSUJmb3BjQTRVOU5Dc0RrdlArSHVxS1dBT0ZQYlFvQXdHK2lsZ0NvU1FFQXVPRFQ1KzloZmpyQTdwOFdGQUJnYWl1RjQ2WFBzdExuaThUVVJRRUF1R3RVQ1JEK3RLUUFBRU5GK2xIQVcwWlBBb2hsaGZLa0FBQnN0RklKV0NIQU9FWUJBS2JYYzhlOFFuQ3U4Qm1PTUdINVNRRUFlTkRNQVRyenNWT1hBZ0FNTjh2M0FNNEowcnhXT2ZjS0FNQk9zd1hCYk1kTFd3b0FzSVJSNzNWbkNkVlpqck0xNy85ZktRQUFCMFVQMStqSHh4Z0tBQkRDak44RE9DZGtjMWpwUENzQXdESkdqM2NqaGtQRVl4cGw5UFVSalFJQVVGR2t3STEwTE1TakFBQmgxSGdORUdHWEZ5RjRJeHhESkRXdWk5WFdWQUVBYUdDMXNHQTlDZ0JBSTZOS2dQTEJGZ29BRU1vcXJ3Rk9lb2V4OEgvUCtQOHlCUUNnc1Y3aHNXSkkwWTRDQUN3cDBoU2dGT0U4U3JUcklCSUZBQWhuOWw4S2RFM0xFcUJndExQcTJpb0F3TElpN3Y1V0RaT0lJcDcvU0JRQUlLUlZwd0NsMUM4QlNrVTdLNit0QWdBc3pTNHdKK2Y5UGdVQUNLdldGQ0JpR05UYVdhNjhROTJyMXZsZWZXMFZBSUJCamdiTTZnRkZXd29BRU5yS1U0QlM5b2U0OEwvTTduODdCUUJJWTVVU2tDR2M5b2g2ZnFOU0FJRHdWdjZKZ0pOUG43L2ZEZll0L3czSFpWbmpENk1QQUtDbnIxOCtobjdBUno2MnlPeitIMmNDQUV5aDVoUkFXS3lsNXZuTVZNQVVBQ0FsSldBTnp1TitDZ0F3alF6ZkJXQ2NUTHYvVWhRQVlESmVCWEJpOUgrTUFnQ2twZ1RNeVhrN1RnRUFwbFA3VllBd21VdnQ4NVZ4OTE5S0tYKzh2SHg3R24wUUFJOVNBbklTL25XOHZIeDdNZ0VBK0VVSmlNMzVxVXNCQUtiVjRxY0NoRXhNTGM1TDF0My9pUUl3dVgvLzU3OUhId0lNcFFTc1QvaTNvUUFBMDFNQzFpWDgyMUVBQUs1UUFzYXkvbTBwQU1BU1d2MldRQ0UwUnF0MXQvdC85VlJLS2MvUGYvNFlmU0FjOC9lLy9XdjBJVUFJLy95L2Z6VDd0NFZIZXkwTGwvUDM2cThmQS9TN0FJQlZ0UHg3QWFZQmJRbi9QazZaN3hYQUl2dzBBTHhTQXVZai9QdFRBSUFsdFM0QmlrQWRyZGRTK0YrbkFDekVGQURlYXYzbmc1V0FZMXF2bi9DLzdhOTMvNzRJdUE1ZkNJUzNXbjR4OEVUWWJOZWpPRGtmMTczN0RvQXZBZ0tyYWowSktNVTBZQ3ZoUDlaNTFyOEpmVk9BZFpnQ3dIczlKZ0dsQ0tCTGVoVWthMytiQXBDRUVnRHY5U29CcFFpalV2cE9ScXozZlFwQUlrb0F2TmV6QkpTU001aDZ2eExKdU1aN1hDMEFwU2dCSzFJQzRMM2VKZUJrNWFBYTlUMklsZGUwcHQrLzY2Y0FKS0lJd0Z1alNrQXBhNFhXeUM5QXJyU09yU2tBeVNrQjhOYklFbkF5WTRoRitLbUhHZGR0SkFXQVVvb2lBTCtMVUFST0lnWmJoTUEvaWJnK003aGJBRXBSQWpKUkJPQlZwQkp3YmtUZ1JRcjhjOEovbjB1LzYwY0I0QTJGZ095aWxvQkxhb1JoMUtDL1JQanZwd0FBYkRSVE1LNU84QjkzcVFCYy9HTkFmaTB3a0ozUWljRjVPTzVhcGw4TmVsTUFnSjlNQS9vVC9QVmNLd0QrSEREQUhjS29MK3ZkeDgxUnZ5a0F3RnVtQWUwSS92cHV2ZEpYQUFCMlVBVHFFZnp0S0FBQWpTZ0Mrd24rOW5ZWGdGS1VBSUF0RklIdEJIOGY5MzZpVHdFQXFFZ1J1RTd3OTNXNEFKU2lCQUE4U2hGNEpmajcyL0w3ZkJRQWdNWXlsZ0doUDVZQ0FCRE15bVZBNk1kUnJRQ1VvZ1FBMUxaQ0dSRDY4V3o5ZGY0S0FFQVFNeFFDZ1I5ZjlRSlFpaElBMEZPRVFpRHc1L0xJSC9OVEFBQW1WTE1jQ1BsMU5Dc0FwU2dCQUJEUkkrRmZpcjhHQ0FBcFBWd0FIbTBZQUVCYmU3TFpCQUFBRXRwVkFFd0JBQ0NHdlpsc0FnQUFDZTB1QUtZQUFERFdrU3crTkFGUUFnQmdqS01aN0JVQUFDUjB1QUNZQWdCQVh6V3kxd1FBQUJLcVVnQk1BUUNnajFxWlcyMENvQVFBUUZzMXM5WXJBQUJJcUdvQk1BVUFnRFpxWjJ6MUNZQVNBQUIxdGNqV0pxOEFsQUFBcUtOVnB2b09BQUFrMUt3QW1BSUF3REV0czdUcEJFQUpBSUI5V21kbzgxY0FTZ0FBUEtaSGR2b09BQUFrMUtVQW1BSUF3RGE5TXJQYkJFQUpBSURiZW1abDExY0FTZ0FBWE5ZN0k3dC9CMEFKQUlDM1JtVGprQzhCS2dFQThOT29UQnoyVXdCS0FBRFpqY3pDb1Q4R3FBUUFrTlhvREJ6K2V3QkdMd0FBOUJZaCs0WVhnRkppTEFRQTlCQWw4MElVZ0ZMaUxBZ0F0QklwNjhJVWdGSmlMUXdBMUJRdDQwSVZnRkxpTFJBQUhCVXgyOElWZ0ZKaUxoUUE3QkUxMDBJV2dGTGlMaGdBYkJVNXk4SVdnRkppTHh3QTNCSTl3MElYZ0ZMaUx5QUEvRzZHN0FwL2dPZWVuLy84TWZvWUFPQ2FHWUwvSlB3RTROeE1Dd3RBTHJObDFGUUZvSlQ1RmhpQTljMllUZE1kOERtdkJBQVlhY2JnUDVsdUFuQnU1b1VIWUc2elo5RFVCYUNVK1U4QUFQTlpJWHVtL3dEbnZCSUFvS1VWZ3Y5aytnbkF1WlZPREFDeHJKWXhTMzJZYzZZQkFOU3dXdkNmTFBtaHppa0NBT3l4YXZDZkxQVUs0SkxWVHlBQTlXWElqdVUvNERuVEFBQnV5UkQ4SjJrKzZEbEZBSUJ6bVlML0pOMEhQcWNJQU9TV01maFAwbjd3YzRvQVFDNlpnLzhrL1FLY1V3UUExaWI0WDFtSUs1UUJnRFVJL2Nzc3loMktBTUNjQlA5dEZ1Y0J5Z0JBYkVKL093dTFreklBRUlQUTM4ZWlWYUFNQVBRbDlJK3pnQTBvQkFCMUNmejZMR2dIQ2dIQVl3UitleFo0RUtVQTRDZGhQNFpGRDBwQkFGWWg0R1A2ZncxbEtyY0xOZFJxQUFBQUFFbEZUa1N1UW1DQyIsICJzaXplcyI6ICI1MTJ4NTEyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiwgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIn1dfQ==">
+
+<style>
+  :root{
+    --black:#0a0a0c;
+    --black-2:#15121c;
+    --black-3:#1c1726;
+    --purple-900:#2e1065;
+    --purple-700:#5b21b6;
+    --purple-500:#8b5cf6;
+    --purple-300:#c4b5fd;
+    --yellow-400:#facc15;
+    --yellow-300:#fde047;
+    --ink:#f4f1f8;
+    --ink-dim:#b3a7cf;
+    --line:#352b4a;
+    --danger:#f87171;
+    --good:#4ade80;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  html,body{
+    background:var(--black);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:Georgia,"Times New Roman",serif;}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--yellow-400);font-weight:700;
+  }
+  a{color:var(--purple-300);}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---------- layout shell ---------- */
+  #app{max-width:780px;margin:0 auto;padding:0 14px 90px;}
+  header.topbar{
+    position:sticky;top:0;z-index:30;
+    background:linear-gradient(180deg,var(--black) 80%,rgba(10,10,12,0));
+    padding:14px 0 10px;display:flex;align-items:center;gap:10px;
+    border-bottom:1px solid var(--line);
+  }
+  header.topbar .brand{display:flex;align-items:center;gap:10px;flex:1;}
+  header.topbar h1{font-size:19px;margin:0;color:var(--ink);}
+  header.topbar .brand small{display:block;color:var(--ink-dim);font-size:11px;font-weight:400;}
+  .icon-btn{
+    width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+    background:var(--black-2);color:var(--ink-dim);display:flex;align-items:center;justify-content:center;
+    font-size:17px;
+  }
+  .icon-btn:hover{border-color:var(--purple-500);color:var(--yellow-400);}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:8px;margin:16px 0;}
+  .tab-btn{
+    flex:1;padding:10px 8px;border-radius:10px;border:1px solid var(--line);
+    background:var(--black-2);color:var(--ink-dim);font-weight:600;font-size:14px;
+    transition:.15s;
+  }
+  .tab-btn.active{background:var(--purple-700);color:#fff;border-color:var(--purple-500);}
+
+  /* ---------- cards / panels ---------- */
+  .panel{
+    background:var(--black-2);border:1px solid var(--line);border-radius:14px;
+    padding:18px;margin-bottom:16px;
+  }
+  .panel h2{font-size:15px;margin:0 0 12px;color:var(--yellow-300);}
+  label{font-size:12.5px;color:var(--ink-dim);display:block;margin:10px 0 5px;}
+  input[type=text],input[type=password],textarea,select{
+    width:100%;background:var(--black-3);border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:10px 12px;font-size:14.5px;outline:none;
+  }
+  input[type=text]:focus,textarea:focus,input[type=password]:focus{border-color:var(--purple-500);}
+  textarea{resize:vertical;min-height:56px;}
+
+  .btn{
+    border-radius:9px;padding:11px 16px;font-weight:700;font-size:14px;border:none;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .btn-primary{background:var(--yellow-400);color:var(--black);width:100%;}
+  .btn-primary:active{background:var(--yellow-300);}
+  .btn-primary:disabled{opacity:.5;}
+  .btn-ghost{background:transparent;border:1px solid var(--purple-500);color:var(--purple-300);}
+  .btn-danger-ghost{background:transparent;border:1px solid var(--line);color:var(--danger);}
+  .btn-sm{padding:7px 11px;font-size:12.5px;border-radius:7px;}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+
+  .dropzone{
+    border:1.5px dashed var(--line);border-radius:12px;padding:26px 14px;text-align:center;
+    color:var(--ink-dim);font-size:13.5px;
+  }
+  .dropzone.drag{border-color:var(--yellow-400);background:rgba(250,204,21,.05);}
+  .dropzone strong{color:var(--yellow-400);}
+
+  /* ---------- dish ticket card ---------- */
+  .ticket{
+    position:relative;background:var(--black-2);border:1px solid var(--line);
+    border-radius:14px;margin-bottom:18px;overflow:hidden;
+    animation:rise .25s ease;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .ticket .tab-num{
+    position:absolute;left:-1px;top:14px;background:var(--yellow-400);color:var(--black);
+    font-size:11px;font-weight:800;padding:3px 9px 3px 7px;border-radius:0 6px 6px 0;
+    letter-spacing:.04em;
+  }
+  .ticket-head{
+    background:linear-gradient(120deg,var(--purple-900),var(--purple-700));
+    padding:18px 16px 14px 38px;
+  }
+  .ticket-head input.dish-name{
+    background:transparent;border:none;color:#fff;font-size:20px;font-weight:700;
+    font-family:Georgia,serif;padding:2px 0;width:100%;border-bottom:1px dashed rgba(255,255,255,.25);
+  }
+  .ticket-head input.dish-name:focus{border-bottom-color:var(--yellow-400);}
+  .meta-row{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+  .meta-field{display:flex;align-items:center;gap:6px;}
+  .meta-field span{font-size:11.5px;color:var(--yellow-300);font-weight:700;}
+  .meta-field input{
+    background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.2);color:#fff;
+    border-radius:6px;padding:4px 8px;font-size:12.5px;width:90px;
+  }
+  .ticket-body{padding:16px;}
+  .ticket-body h3{
+    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);
+    margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px;
+  }
+  table.ing-table{width:100%;border-collapse:collapse;margin-bottom:6px;}
+  table.ing-table td{padding:4px 2px;}
+  table.ing-table input{font-size:13.5px;padding:7px 8px;}
+  .ing-name{width:50%;}
+  .ing-qty{width:22%;}
+  .ing-unit{width:20%;}
+  .ing-del{width:8%;text-align:center;}
+  .ing-del button{background:none;border:none;color:var(--ink-dim);font-size:16px;}
+  .ing-del button:hover{color:var(--danger);}
+
+  .allerg-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+  .allerg-chip{
+    border:1px solid var(--line);background:var(--black-3);color:var(--ink-dim);
+    border-radius:20px;padding:6px 11px;font-size:12.5px;display:flex;align-items:center;gap:5px;
+    transition:.12s;
+  }
+  .allerg-chip.on{background:var(--yellow-400);color:var(--black);border-color:var(--yellow-400);font-weight:700;}
+
+  .section-spacer{margin-top:16px;}
+  .export-group-label{font-size:11.5px;color:var(--yellow-300);font-weight:700;margin-top:14px;margin-bottom:4px;}
+  .export-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+  .export-row .btn{flex:1;min-width:90px;}
+
+  .mode-seg{display:flex;gap:6px;margin-top:14px;}
+  .seg-btn{flex:1;padding:8px 4px;font-size:11.5px;border-radius:7px;border:1px solid var(--line);background:var(--black-3);color:var(--ink-dim);font-weight:600;}
+  .seg-btn.active{background:var(--purple-700);color:#fff;border-color:var(--purple-500);}
+
+  .card-controls{position:absolute;top:12px;right:10px;display:flex;align-items:center;gap:10px;z-index:2;}
+  .card-controls .sel-box{width:18px;height:18px;accent-color:var(--yellow-400);}
+  .card-controls .delete-card{background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;padding:0;}
+  .card-controls .delete-card:hover{color:var(--yellow-300);}
+
+  .bulk-bar{display:none;align-items:center;gap:8px;margin:0 0 14px;}
+  .bulk-bar.show{display:flex;}
+  .bulk-bar span{font-size:12px;color:var(--ink-dim);}
+
+
+  /* ---------- menu import list ---------- */
+  .menu-item{
+    display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line);
+  }
+  .menu-item:last-child{border-bottom:none;}
+  .menu-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--yellow-400);}
+  .menu-item label{margin:0;color:var(--ink);font-size:14px;flex:1;}
+
+  .progress-wrap{background:var(--black-3);border-radius:8px;height:8px;overflow:hidden;margin-top:10px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--purple-500),var(--yellow-400));width:0%;transition:.2s;}
+
+  .helper-text{font-size:12px;color:var(--ink-dim);margin-top:6px;line-height:1.5;}
+  .empty-state{text-align:center;color:var(--ink-dim);padding:30px 10px;font-size:13.5px;}
+
+  /* ---------- toast ---------- */
+  #toastWrap{position:fixed;bottom:16px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:100;pointer-events:none;}
+  .toast{
+    background:var(--black-3);border:1px solid var(--line);color:var(--ink);padding:10px 16px;
+    border-radius:10px;font-size:13px;max-width:90%;box-shadow:0 6px 18px rgba(0,0,0,.4);
+    animation:rise .2s ease;
+  }
+  .toast.error{border-color:var(--danger);color:#ffd9d9;}
+  .toast.success{border-color:var(--good);color:#d9ffe6;}
+
+  /* ---------- modal ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:60;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--black-2);border:1px solid var(--line);border-radius:16px 16px 0 0;
+    width:100%;max-width:480px;padding:20px;animation:rise .2s ease;
+  }
+  .modal h2{margin:0 0 4px;color:var(--yellow-300);font-size:17px;}
+  .modal-close{display:flex;justify-content:flex-end;}
+
+  .spinner{
+    width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.25);
+    border-top-color:var(--black);animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  @media(min-width:560px){
+    .ticket-body{padding:18px 22px;}
+  }
+
+  #printArea{display:none;}
+  @media print{
+    body.printing > *:not(#printArea){display:none !important;}
+    body.printing #printArea{display:block !important;}
+    #printArea{font-family:Georgia,serif;color:#1a1a1a;padding:0;margin:0;}
+    #printArea table{width:100%;border-collapse:collapse;font-size:13px;}
+    #printArea th,#printArea td{border:1px solid #ccc;padding:6px 10px;text-align:left;}
+    #printArea th{background:#f3f0fa;}
+    .print-page{page-break-after:always;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#0a0a0c"/>
+        <path d="M20 30 Q20 14 32 12 Q44 14 44 30 Z" fill="#facc15"/>
+        <rect x="18" y="28" width="28" height="8" rx="3" fill="#facc15"/>
+        <rect x="14" y="44" width="36" height="10" rx="3" fill="#5b21b6"/>
+        <circle cx="47" cy="45" r="11" fill="#0a0a0c" stroke="#facc15" stroke-width="2"/>
+        <path d="M41.5 45.5 l3.5 3.5 l6 -8" stroke="#facc15" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h1 class="display">FicheChef</h1>
+        <small>Fiches techniques &amp; allergènes, prêtes à l'emploi</small>
+      </div>
+    </div>
+    <button class="icon-btn" id="settingsBtn" title="Paramètres">⚙️</button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="single">Plat unique</button>
+    <button class="tab-btn" data-tab="batch">Plusieurs plats</button>
+    <button class="tab-btn" data-tab="menu">Importer un menu</button>
+  </div>
+
+  <!-- TAB: single dish -->
+  <section id="tab-single">
+    <div class="panel">
+      <h2>Analyser un plat</h2>
+      <label for="dishNameInput">Nom du plat</label>
+      <input type="text" id="dishNameInput" placeholder="ex : Poulet au citron confit">
+      <label for="dishContextInput">Précisions (facultatif)</label>
+      <textarea id="dishContextInput" placeholder="ex : recette maison, sauce à la crème, sans porc..."></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="analyzeDishBtn" style="flex:1;">Analyser le plat</button>
+      </div>
+      <p class="helper-text">L'IA propose une fiche de départ. Vous gardez la main : ajoutez, retirez ou cochez n'importe quel ingrédient ou allergène avant d'exporter — utile quand un cuisinier ajoute par exemple un peu de moutarde non prévue à l'origine.</p>
+    </div>
+  </section>
+
+  <!-- TAB: batch dishes -->
+  <section id="tab-batch" style="display:none;">
+    <div class="panel">
+      <h2>Saisir plusieurs plats</h2>
+      <label for="batchDishesInput">Un plat par ligne</label>
+      <textarea id="batchDishesInput" style="min-height:140px;" placeholder="Poulet au citron
+Salade César
+Tarte tatin
+..."></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="analyzeBatchBtn" style="flex:1;">Analyser tous les plats</button>
+      </div>
+      <p class="helper-text">Écrivez ou collez votre liste (un plat par ligne), puis lancez l'analyse en une seule fois. Chaque fiche générée reste modifiable avant export.</p>
+      <div id="dishBatchProgressWrap" style="display:none;">
+        <div class="progress-wrap"><div class="progress-bar" id="dishBatchProgressBar"></div></div>
+        <div class="helper-text" id="dishBatchProgressText"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: menu import -->
+  <section id="tab-menu" style="display:none;">
+    <div class="panel">
+      <h2>Importer un menu</h2>
+      <div class="dropzone" id="dropzone">
+        <div>📄 Glissez un fichier ici ou</div>
+        <div class="btn-row" style="justify-content:center;">
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+            Choisir un fichier
+            <input type="file" id="menuFileInput" accept=".pdf,.docx,.xlsx,.xls,.csv" style="display:none;">
+          </label>
+        </div>
+        <div id="fileNameLabel" style="margin-top:6px;color:var(--ink-dim);"></div>
+      </div>
+      <p class="helper-text">Formats acceptés : PDF, Word (.docx), Excel (.xlsx / .xls / .csv).</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="extractMenuBtn" style="flex:1;" disabled>Extraire les plats du menu</button>
+      </div>
+    </div>
+
+    <div class="panel" id="menuListPanel" style="display:none;">
+      <h2>Plats détectés — sélectionnez ceux à traiter</h2>
+      <div id="menuItemsList"></div>
+      <div class="btn-row">
+        <button class="btn btn-ghost btn-sm" id="selectAllBtn">Tout sélectionner</button>
+        <button class="btn btn-primary" id="generateSelectedBtn" style="flex:1;">Générer les fiches sélectionnées</button>
+      </div>
+      <div id="batchProgressWrap" style="display:none;">
+        <div class="progress-wrap"><div class="progress-bar" id="batchProgressBar"></div></div>
+        <div class="helper-text" id="batchProgressText"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="resultsSection">
+    <div class="bulk-bar" id="bulkBar">
+      <button class="btn btn-ghost btn-sm" id="selectAllDishesBtn">Tout sélectionner</button>
+      <button class="btn btn-danger-ghost btn-sm" id="deleteSelectedBtn">🗑 Supprimer la sélection (<span id="selCount">0</span>)</button>
+    </div>
+    <div id="batchExportRow" class="panel" style="display:none;">
+      <h2 style="font-size:14px;color:var(--yellow-300);margin:4px 0 10px;">📦 Tout télécharger (toutes les fiches en un seul fichier)</h2>
+      <div class="export-group-label">📋 Fiches techniques seules</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-all-word" data-mode="fiche">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-excel" data-mode="fiche">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-pdf" data-mode="fiche">🖨 PDF</button>
+      </div>
+      <div class="export-group-label">⚠ Allergènes seuls</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-all-word" data-mode="allergenes">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-excel" data-mode="allergenes">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-pdf" data-mode="allergenes">🖨 PDF</button>
+      </div>
+      <div class="export-group-label">📋⚠ Les deux ensemble</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-all-word" data-mode="all">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-excel" data-mode="all">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-all-pdf" data-mode="all">🖨 PDF</button>
+      </div>
+    </div>
+    <div id="dishList"></div>
+    <div class="empty-state" id="emptyState">Aucune fiche pour le moment. Analysez un plat ou importez un menu pour commencer.</div>
+  </section>
+</div>
+
+<!-- Settings modal -->
+<div class="overlay" id="settingsOverlay">
+  <div class="modal">
+    <div class="modal-close"><button class="icon-btn" id="closeSettings">✕</button></div>
+    <h2>Paramètres</h2>
+    <p class="helper-text">Cette app utilise Google Gemini (gratuit, sans carte bancaire) pour l'analyse IA. Allez sur aistudio.google.com, connectez-vous, cliquez "Get API key" → "Create API key", puis collez-la ci-dessous — elle reste stockée uniquement sur cet appareil, jamais envoyée ailleurs.</p>
+    <label for="apiKeyInput">Clé API Google AI Studio (Gemini)</label>
+    <input type="password" id="apiKeyInput" placeholder="AIzaSy...">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveSettingsBtn" style="flex:1;">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div id="printArea"></div>
+<div id="toastWrap"></div>
+
+<script>
+/* ================= constants ================= */
+const ALLERGENS = [
+  {id:'gluten', label:'Gluten', icon:'🌾'},
+  {id:'crustaces', label:'Crustacés', icon:'🦐'},
+  {id:'oeufs', label:'Œufs', icon:'🥚'},
+  {id:'poissons', label:'Poissons', icon:'🐟'},
+  {id:'arachides', label:'Arachides', icon:'🥜'},
+  {id:'soja', label:'Soja', icon:'🌱'},
+  {id:'lait', label:'Lait', icon:'🥛'},
+  {id:'fruits_coque', label:'Fruits à coque', icon:'🌰'},
+  {id:'celeri', label:'Céleri', icon:'🥬'},
+  {id:'moutarde', label:'Moutarde', icon:'🟡'},
+  {id:'sesame', label:'Sésame', icon:'🌿'},
+  {id:'sulfites', label:'Sulfites', icon:'🍷'},
+  {id:'lupin', label:'Lupin', icon:'🫘'},
+  {id:'mollusques', label:'Mollusques', icon:'🦪'},
+];
+
+const SYSTEM_PROMPT_DISH = `Tu es un chef de cuisine professionnel et expert en sécurité alimentaire (allergènes UE). Réponds UNIQUEMENT avec un objet JSON valide, sans aucun texte avant/après, sans balises markdown. Format exact :
+{"nom":"string","portions":"string","temps_preparation":"string","ingredients":[{"nom":"string","quantite":"string","unite":"string"}],"allergenes":["id", ...]}
+Les valeurs possibles pour "allergenes" sont EXCLUSIVEMENT parmi : gluten, crustaces, oeufs, poissons, arachides, soja, lait, fruits_coque, celeri, moutarde, sesame, sulfites, lupin, mollusques.
+Base les allergènes strictement sur les ingrédients réels d'une recette professionnelle standard pour ce plat. Sois concret et réaliste (quantités pour la fiche technique d'un restaurant/hôtel).`;
+
+const SYSTEM_PROMPT_MENU = `Tu reçois le texte brut extrait d'un fichier de menu de restaurant/hôtel. Identifie tous les noms de plats proposés (entrées, plats, desserts, etc.), en ignorant les prix, titres de catégories, allergies déjà mentionnées et texte non pertinent. Réponds UNIQUEMENT avec un objet JSON, sans texte additionnel : {"plats":["nom1","nom2", ...]}`;
+
+/* ================= state ================= */
+const state = {
+  apiKey: localStorage.getItem('fichechef_api_key') || '',
+  dishes: [],          // generated fiche cards
+  menuDishNames: [],   // extracted candidate names from imported menu
+  menuRawText: '',
+};
+
+/* ================= utils ================= */
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function slug(s){ return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'') || 'plat'; }
+function uid(){ return Math.random().toString(36).slice(2,10); }
+
+function toast(msg, type=''){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); }, 4200);
+}
+
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    if(document.querySelector(`script[src="${src}"]`)){ resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('Échec de chargement de la librairie : ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+/* ================= Claude API ================= */
+const DISH_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    nom: { type: 'STRING' },
+    portions: { type: 'STRING' },
+    temps_preparation: { type: 'STRING' },
+    ingredients: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          nom: { type: 'STRING' },
+          quantite: { type: 'STRING' },
+          unite: { type: 'STRING' }
+        },
+        required: ['nom','quantite','unite']
+      }
+    },
+    allergenes: { type: 'ARRAY', items: { type: 'STRING' } }
+  },
+  required: ['nom','ingredients','allergenes']
+};
+const MENU_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    plats: { type: 'ARRAY', items: { type: 'STRING' } }
+  },
+  required: ['plats']
+};
+
+function safeJSONParse(rawText){
+  let txt = String(rawText).trim();
+  txt = txt.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+  const firstBrace = txt.indexOf('{');
+  const lastBrace = txt.lastIndexOf('}');
+  if(firstBrace>=0 && lastBrace>firstBrace) txt = txt.slice(firstBrace, lastBrace+1);
+  txt = txt.replace(/,\s*([\]}])/g, '$1'); // strip trailing commas — the most common LLM JSON slip
+  try{
+    return JSON.parse(txt);
+  }catch(e){
+    throw new Error('Réponse du modèle mal formée (cela arrive parfois). Réessayez — appuyez à nouveau sur le bouton.');
+  }
+}
+
+async function callClaude(system, userMsg, maxTokens, schema){
+  if(!state.apiKey){
+    throw new Error('Aucune clé API enregistrée. Ouvrez ⚙️ Paramètres et ajoutez votre clé Google AI Studio (Gemini).');
+  }
+  const generationConfig = {
+    maxOutputTokens: maxTokens || 1500,
+    responseMimeType: 'application/json'
+  };
+  if(schema) generationConfig.responseSchema = schema;
+  let res;
+  try{
+    res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-goog-api-key': state.apiKey
+      },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: system }] },
+        contents: [ { role:'user', parts: [{ text: userMsg }] } ],
+        generationConfig
+      })
+    });
+  }catch(networkErr){
+    throw new Error('Connexion impossible (réseau bloqué ou hors-ligne). Vérifiez votre connexion internet et réessayez.');
+  }
+  if(!res.ok){
+    const t = await res.text().catch(()=> '');
+    throw new Error('Erreur API (' + res.status + '). Vérifiez votre clé sur aistudio.google.com. ' + t.slice(0,160));
+  }
+  const data = await res.json();
+  const cand = data.candidates && data.candidates[0];
+  const part = cand && cand.content && cand.content.parts && cand.content.parts[0];
+  if(!part || !part.text) throw new Error('Réponse vide du modèle (essayez de relancer).');
+  return safeJSONParse(part.text);
+}
+
+function dishFromAPI(json){
+  const allergSet = {};
+  ALLERGENS.forEach(a=>allergSet[a.id]=false);
+  (json.allergenes||[]).forEach(id=>{ if(allergSet.hasOwnProperty(id)) allergSet[id]=true; });
+  return {
+    id: uid(),
+    name: json.nom || 'Plat sans nom',
+    portions: json.portions || '',
+    prepTime: json.temps_preparation || '',
+    ingredients: (json.ingredients||[]).map(i=>({id:uid(), name:i.nom||'', qty:i.quantite||'', unit:i.unite||''})),
+    allergens: allergSet,
+    notes: '',
+    selected: false
+  };
+}
+
+async function analyzeDish(name, context){
+  const userMsg = `Plat : "${name}".${context ? (' Précisions : ' + context) : ''} Génère la fiche technique standard de ce plat tel que préparé dans un restaurant ou un hôtel.`;
+  const json = await callClaude(SYSTEM_PROMPT_DISH, userMsg, 1300, DISH_SCHEMA);
+  return dishFromAPI(json);
+}
+
+/* ================= file parsing (menu import) ================= */
+async function extractTextFromFile(file){
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(ext === 'pdf'){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const buf = await file.arrayBuffer();
+    const pdf = await window.pdfjsLib.getDocument({data: buf}).promise;
+    let text = '';
+    for(let i=1;i<=pdf.numPages;i++){
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(it=>it.str).join(' ') + '\n';
+    }
+    return text;
+  } else if(ext === 'docx'){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js');
+    const buf = await file.arrayBuffer();
+    const result = await window.mammoth.extractRawText({arrayBuffer: buf});
+    return result.value;
+  } else if(ext === 'xlsx' || ext === 'xls' || ext === 'csv'){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+    const buf = await file.arrayBuffer();
+    const wb = window.XLSX.read(buf, {type:'array'});
+    let text = '';
+    wb.SheetNames.forEach(name=>{
+      text += window.XLSX.utils.sheet_to_csv(wb.Sheets[name]) + '\n';
+    });
+    return text;
+  }
+  throw new Error('Format non supporté. Utilisez PDF, .docx, .xlsx, .xls ou .csv.');
+}
+
+async function extractDishNames(rawText){
+  const trimmed = rawText.replace(/\s+/g,' ').trim().slice(0, 7000);
+  const json = await callClaude(SYSTEM_PROMPT_MENU, 'Texte du menu :\n' + trimmed, 1200, MENU_SCHEMA);
+  return Array.isArray(json.plats) ? json.plats.filter(Boolean) : [];
+}
+
+/* ================= export builders ================= */
+function ingredientsBlockHTML(dish){
+  const rows = dish.ingredients.map(i=>`<tr><td>${esc(i.name)}</td><td>${esc(i.qty)}</td><td>${esc(i.unit)}</td></tr>`).join('');
+  return `<p style="margin:0 0 10px;"><strong>Portions :</strong> ${esc(dish.portions||'-')} &nbsp;&nbsp; <strong>Temps de préparation :</strong> ${esc(dish.prepTime||'-')}</p>
+      <h3 style="color:#5b21b6;border-bottom:2px solid #facc15;padding-bottom:4px;font-size:15px;">Ingrédients</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;" border="1" cellpadding="6">
+        <thead><tr style="background:#f3f0fa;"><th>Ingrédient</th><th>Quantité</th><th>Unité</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="3">—</td></tr>'}</tbody>
+      </table>`;
+}
+function allergensBlockHTML(dish){
+  const checked = ALLERGENS.filter(a=>dish.allergens[a.id]);
+  const allergHTML = checked.length
+    ? checked.map(a=>`<span style="display:inline-block;margin:2px 6px 2px 0;padding:4px 10px;background:#facc15;color:#0a0a0c;border-radius:12px;font-weight:bold;font-size:13px;">${a.icon} ${esc(a.label)}</span>`).join('')
+    : '<em>Aucun allergène identifié</em>';
+  return `<h3 style="color:#5b21b6;border-bottom:2px solid #facc15;padding-bottom:4px;font-size:15px;">⚠ Allergènes</h3>
+      <div>${allergHTML}</div>`;
+}
+function modeLabel(mode){
+  if(mode==='fiche') return 'Fiche technique';
+  if(mode==='allergenes') return 'Fiche allergènes';
+  return 'Fiche technique & allergènes';
+}
+function modeSuffix(mode){
+  if(mode==='fiche') return '_fiche-technique';
+  if(mode==='allergenes') return '_allergenes';
+  return '_complet';
+}
+function dishPlainText(dish){
+  const lines = [];
+  lines.push(`FICHE TECHNIQUE — ${dish.name}`);
+  lines.push(`Portions : ${dish.portions || '-'}    Préparation : ${dish.prepTime || '-'}`);
+  lines.push('');
+  lines.push('Ingrédients :');
+  dish.ingredients.forEach(i=> lines.push(`- ${i.name} : ${i.qty} ${i.unit}`));
+  lines.push('');
+  const checked = ALLERGENS.filter(a=>dish.allergens[a.id]).map(a=>a.label);
+  lines.push('⚠ Allergènes : ' + (checked.length ? checked.join(', ') : 'Aucun'));
+  if(dish.notes){ lines.push(''); lines.push('Notes : ' + dish.notes); }
+  return lines.join('\n');
+}
+
+async function copyDishText(dish){
+  const text = dishPlainText(dish);
+  try{
+    await navigator.clipboard.writeText(text);
+    toast('Texte copié — collez-le dans Notes, Word, WhatsApp...', 'success');
+  }catch(e){
+    const area = document.getElementById('printArea');
+    area.innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit;padding:16px;color:#000;">${esc(text)}</pre>`;
+    area.style.display = 'block';
+    area.style.position = 'fixed';
+    area.style.top = '0'; area.style.left = '0'; area.style.right = '0';
+    area.style.background = '#fff'; area.style.zIndex = '999'; area.style.overflow = 'auto'; area.style.maxHeight = '100vh';
+    toast('Copie automatique bloquée — sélectionnez le texte affiché et copiez-le manuellement.', 'error');
+  }
+}
+
+function dishContentHTML(dish, mode){
+  let inner = '';
+  if(mode === 'fiche'){
+    inner = ingredientsBlockHTML(dish);
+  } else if(mode === 'allergenes'){
+    inner = allergensBlockHTML(dish);
+  } else {
+    inner = ingredientsBlockHTML(dish) + '<div style="margin-top:18px;">' + allergensBlockHTML(dish) + '</div>'
+      + (dish.notes ? `<h3 style="color:#5b21b6;margin-top:18px;font-size:15px;">Notes</h3><p>${esc(dish.notes)}</p>` : '');
+  }
+  return `
+  <div style="font-family:Georgia,serif;color:#1a1a1a;">
+    <div style="background:#2e1065;color:#facc15;padding:16px 20px;border-radius:8px 8px 0 0;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.85;">${esc(modeLabel(mode))}</div>
+      <h1 style="margin:4px 0 0;font-size:24px;color:#fff;">${esc(dish.name)}</h1>
+    </div>
+    <div style="border:1px solid #ddd;padding:18px 20px;border-radius:0 0 8px 8px;">${inner}</div>
+  </div>`;
+}
+
+/* ---- RTF (real Word format) ---- */
+function rtfUEscape(code){
+  const signed = code > 32767 ? code - 65536 : code;
+  return '\\u' + signed + '?';
+}
+function rtfEscape(str){
+  let out = '';
+  for(const ch of String(str ?? '')){
+    if(ch === '\\' || ch === '{' || ch === '}'){ out += '\\' + ch; continue; }
+    if(ch === '\n'){ out += '\\par '; continue; }
+    const code = ch.codePointAt(0);
+    if(code <= 126){ out += ch; continue; }
+    if(code <= 0xFFFF){
+      out += rtfUEscape(code);
+    } else {
+      const c = code - 0x10000;
+      out += rtfUEscape(0xD800 + (c >> 10)) + rtfUEscape(0xDC00 + (c & 0x3FF));
+    }
+  }
+  return out;
+}
+function rtfTableRow(cells, widths){
+  let s = '\\trowd\\trgaph80\\trleft0';
+  widths.forEach(w=> s += '\\cellx'+w);
+  s += '\n';
+  cells.forEach(c=> s += '\\intbl ' + c + '\\cell\n');
+  s += '\\row\n';
+  return s;
+}
+const ING_COLS = [5400, 7300, 9300];
+const ALLERG_COLS = [1500, 9300];
+function ingredientsTableRTF(dish){
+  const rows = [rtfTableRow(['\\b '+rtfEscape('Ingrédient')+'\\b0','\\b '+rtfEscape('Quantité')+'\\b0','\\b '+rtfEscape('Unité')+'\\b0'], ING_COLS)];
+  if(dish.ingredients.length){
+    dish.ingredients.forEach(i=> rows.push(rtfTableRow([rtfEscape(i.name), rtfEscape(i.qty), rtfEscape(i.unit)], ING_COLS)));
+  } else {
+    rows.push(rtfTableRow([rtfEscape('—'), '', ''], ING_COLS));
+  }
+  return rows.join('');
+}
+function allergensTableRTF(dish){
+  const checked = ALLERGENS.filter(a=>dish.allergens[a.id]);
+  const rows = [rtfTableRow(['\\b '+rtfEscape('Icône')+'\\b0','\\b '+rtfEscape('Allergène')+'\\b0'], ALLERG_COLS)];
+  if(checked.length){
+    checked.forEach(a=> rows.push(rtfTableRow([rtfEscape(a.icon), '\\b '+rtfEscape(a.label)+'\\b0'], ALLERG_COLS)));
+  } else {
+    rows.push(rtfTableRow([rtfEscape('—'), rtfEscape('Aucun allergène identifié')], ALLERG_COLS));
+  }
+  return rows.join('');
+}
+function dishRTF(dish, mode){
+  const p = [];
+  p.push('{\\rtf1\\ansi\\ansicpg1252\\deff0\\uc1');
+  p.push('{\\fonttbl{\\f0\\froman Times New Roman;}}');
+  p.push('{\\colortbl;\\red46\\green16\\blue101;\\red180\\green83\\blue9;}');
+  p.push('\\f0');
+  p.push('\\fs18\\cf2\\b ' + rtfEscape(modeLabel(mode).toUpperCase()) + '\\b0\\cf0\\par');
+  p.push('\\fs36\\b ' + rtfEscape(dish.name) + '\\b0\\fs20\\par');
+  p.push('\\cf2 ' + rtfEscape('—'.repeat(38)) + '\\cf0\\par\\par');
+  if(mode !== 'allergenes'){
+    p.push('\\b ' + rtfEscape('Portions :') + '\\b0  ' + rtfEscape(dish.portions||'-') + '      \\b ' + rtfEscape('Préparation :') + '\\b0  ' + rtfEscape(dish.prepTime||'-') + '\\par\\par');
+    p.push('\\cf1\\b\\fs24 ' + rtfEscape('Ingrédients') + '\\b0\\fs20\\cf0\\par');
+    p.push(ingredientsTableRTF(dish));
+    p.push('\\par');
+  }
+  if(mode !== 'fiche'){
+    p.push('\\cf1\\b\\fs24 ' + rtfEscape('⚠ Allergènes') + '\\b0\\fs20\\cf0\\par');
+    p.push(allergensTableRTF(dish));
+    p.push('\\par');
+  }
+  if(mode === 'all' && dish.notes){
+    p.push('\\cf1\\b\\fs24 ' + rtfEscape('Notes') + '\\b0\\fs20\\cf0\\par');
+    p.push(rtfEscape(dish.notes) + '\\par\\par');
+  }
+  p.push('\\cf2 ' + rtfEscape('—'.repeat(38)) + '\\cf0\\par');
+  p.push('\\i\\fs16\\cf2 ' + rtfEscape('FicheChef · Fiches techniques & allergènes UE · Règl. 1169/2011') + '\\i0\\fs20\\cf0\\par');
+  p.push('}');
+  return p.join('\n');
+}
+function allDishesRTF(mode){
+  mode = mode || 'all';
+  const p = ['{\\rtf1\\ansi\\ansicpg1252\\deff0\\uc1',
+    '{\\fonttbl{\\f0\\froman Times New Roman;}}',
+    '{\\colortbl;\\red46\\green16\\blue101;\\red180\\green83\\blue9;}',
+    '\\f0'];
+  p.push('\\fs18\\cf2\\b ' + rtfEscape(modeLabel(mode).toUpperCase() + ' — ' + state.dishes.length + ' PLATS') + '\\b0\\cf0\\par\\par');
+  state.dishes.forEach((dish,idx)=>{
+    if(idx>0) p.push('\\page');
+    p.push('\\fs36\\b ' + rtfEscape(dish.name) + '\\b0\\fs20\\par');
+    p.push('\\cf2 ' + rtfEscape('—'.repeat(38)) + '\\cf0\\par\\par');
+    if(mode !== 'allergenes'){
+      p.push('\\b ' + rtfEscape('Portions :') + '\\b0  ' + rtfEscape(dish.portions||'-') + '      \\b ' + rtfEscape('Préparation :') + '\\b0  ' + rtfEscape(dish.prepTime||'-') + '\\par\\par');
+      p.push('\\cf1\\b\\fs24 ' + rtfEscape('Ingrédients') + '\\b0\\fs20\\cf0\\par');
+      p.push(ingredientsTableRTF(dish));
+      p.push('\\par');
+    }
+    if(mode !== 'fiche'){
+      p.push('\\cf1\\b\\fs24 ' + rtfEscape('⚠ Allergènes') + '\\b0\\fs20\\cf0\\par');
+      p.push(allergensTableRTF(dish));
+    }
+  });
+  p.push('\\par\\cf2 ' + rtfEscape('—'.repeat(38)) + '\\cf0\\par');
+  p.push('\\i\\fs16\\cf2 ' + rtfEscape('FicheChef · Fiches techniques & allergènes UE · Règl. 1169/2011') + '\\i0\\fs20\\cf0\\par');
+  p.push('}');
+  return p.join('\n');
+}
+
+/* ---- CSV (real Excel-compatible format) ---- */
+function csvEscape(s){
+  s = String(s ?? '');
+  if(/[",;\n]/.test(s)) s = '"' + s.replace(/"/g,'""') + '"';
+  return s;
+}
+function csvLines(rows){ return rows.map(r=> r.map(csvEscape).join(',')).join('\r\n'); }
+function dishCSV(dish, mode){
+  const rows = [];
+  rows.push([modeLabel(mode) + ' — ' + dish.name]);
+  rows.push([]);
+  if(mode !== 'allergenes'){
+    rows.push(['Portions', dish.portions || '-']);
+    rows.push(['Préparation', dish.prepTime || '-']);
+    rows.push([]);
+    rows.push(['Ingrédient','Quantité','Unité']);
+    dish.ingredients.forEach(i=> rows.push([i.name, i.qty, i.unit]));
+    rows.push([]);
+  }
+  if(mode !== 'fiche'){
+    const checked = ALLERGENS.filter(a=>dish.allergens[a.id]).map(a=>a.label);
+    rows.push(['Allergènes', checked.length ? checked.join(', ') : 'Aucun']);
+  }
+  if(mode === 'all' && dish.notes){
+    rows.push(['Notes', dish.notes]);
+  }
+  return csvLines(rows);
+}
+function allDishesCSV(mode){
+  mode = mode || 'all';
+  const rows = [];
+  rows.push([modeLabel(mode) + ' — ' + state.dishes.length + ' plats']);
+  rows.push([]);
+  state.dishes.forEach((dish,idx)=>{
+    if(idx>0) rows.push([]);
+    rows.push(['FICHE — ' + dish.name]);
+    if(mode !== 'allergenes'){
+      rows.push(['Portions', dish.portions || '-']);
+      rows.push(['Préparation', dish.prepTime || '-']);
+      rows.push([]);
+      rows.push(['Ingrédient','Quantité','Unité']);
+      dish.ingredients.forEach(i=> rows.push([i.name, i.qty, i.unit]));
+      rows.push([]);
+    }
+    if(mode !== 'fiche'){
+      const checked = ALLERGENS.filter(a=>dish.allergens[a.id]).map(a=>a.label);
+      rows.push(['Allergènes', checked.length ? checked.join(', ') : 'Aucun']);
+    }
+  });
+  return csvLines(rows);
+}
+
+async function downloadBlob(content, filename, mime){
+  const parts = (mime === 'text/csv') ? ['\ufeff', content] : [content];
+  const blob = new Blob(parts, {type: mime});
+  if(navigator.canShare){
+    try{
+      const file = new File([blob], filename, {type: mime});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title: filename});
+        return;
+      }
+    }catch(e){ /* user cancelled share or it failed — fall back below */ }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
+}
+
+function exportWord(dish, mode){
+  mode = mode || 'all';
+  downloadBlob(dishRTF(dish, mode), `Fiche_${slug(dish.name)}${modeSuffix(mode)}.rtf`, 'application/rtf');
+  toast(modeLabel(mode) + ' téléchargée (.rtf — ouvrable dans Word/WPS/Docs).', 'success');
+}
+
+function exportExcel(dish, mode){
+  mode = mode || 'all';
+  downloadBlob(dishCSV(dish, mode), `Fiche_${slug(dish.name)}${modeSuffix(mode)}.csv`, 'text/csv');
+  toast(modeLabel(mode) + ' téléchargée (.csv — ouvrable dans Excel/Sheets).', 'success');
+}
+
+function doPrint(html){
+  const area = document.getElementById('printArea');
+  area.innerHTML = html;
+  document.body.classList.add('printing');
+  setTimeout(()=>{ window.print(); }, 50);
+}
+window.addEventListener('afterprint', ()=>{
+  document.body.classList.remove('printing');
+  document.getElementById('printArea').innerHTML = '';
+});
+
+function exportPDF(dish, mode){
+  mode = mode || 'all';
+  doPrint(dishContentHTML(dish, mode));
+  toast('Choisissez "Enregistrer en PDF" dans la fenêtre d\'impression.', '');
+}
+
+function allDishesHTML(mode){
+  mode = mode || 'all';
+  return state.dishes.map(d=> dishContentHTML(d,mode) + '<div style="page-break-after:always;"></div>').join('<hr style="margin:24px 0;border:none;border-top:1px dashed #ccc;">');
+}
+function exportAllWord(mode){
+  mode = mode || 'all';
+  if(!state.dishes.length){ toast('Aucune fiche à exporter.', 'error'); return; }
+  downloadBlob(allDishesRTF(mode), `Fiches_menu${modeSuffix(mode)}.rtf`, 'application/rtf');
+  toast(state.dishes.length + ' fiches (' + modeLabel(mode) + ') téléchargées en un seul fichier (.rtf).', 'success');
+}
+function exportAllExcel(mode){
+  mode = mode || 'all';
+  if(!state.dishes.length){ toast('Aucune fiche à exporter.', 'error'); return; }
+  downloadBlob(allDishesCSV(mode), `Fiches_menu${modeSuffix(mode)}.csv`, 'text/csv');
+  toast(state.dishes.length + ' fiches (' + modeLabel(mode) + ') téléchargées en un seul fichier (.csv).', 'success');
+}
+function exportAllPDF(mode){
+  mode = mode || 'all';
+  if(!state.dishes.length){ toast('Aucune fiche à exporter.', 'error'); return; }
+  doPrint(allDishesHTML(mode));
+}
+
+/* ================= rendering ================= */
+function renderEmptyState(){
+  document.getElementById('emptyState').style.display = state.dishes.length ? 'none' : 'block';
+  document.getElementById('batchExportRow').style.display = state.dishes.length > 1 ? 'block' : 'none';
+}
+
+function ingredientRowHTML(dishId, ing){
+  return `<tr data-ing-id="${ing.id}">
+    <td class="ing-name"><input type="text" value="${esc(ing.name)}" data-act="ing-name" placeholder="Ingrédient"></td>
+    <td class="ing-qty"><input type="text" value="${esc(ing.qty)}" data-act="ing-qty" placeholder="Qté"></td>
+    <td class="ing-unit"><input type="text" value="${esc(ing.unit)}" data-act="ing-unit" placeholder="Unité"></td>
+    <td class="ing-del"><button data-act="ing-del" title="Retirer">✕</button></td>
+  </tr>`;
+}
+
+function allergenChipsHTML(dish){
+  return ALLERGENS.map(a=>`<button class="allerg-chip ${dish.allergens[a.id]?'on':''}" data-act="allerg-toggle" data-allerg="${a.id}">${a.icon} ${esc(a.label)}</button>`).join('');
+}
+
+function dishCardHTML(dish, index){
+  return `
+  <div class="ticket" data-dish-id="${dish.id}">
+    <span class="tab-num">N°${String(index+1).padStart(2,'0')}</span>
+    <div class="card-controls">
+      <input type="checkbox" class="sel-box" data-act="select-dish" title="Sélectionner" ${dish.selected?'checked':''}>
+      <button class="delete-card" data-act="delete-dish" title="Supprimer cette fiche">✕</button>
+    </div>
+    <div class="ticket-head">
+      <input type="text" class="dish-name" value="${esc(dish.name)}" data-act="dish-name">
+      <div class="meta-row">
+        <div class="meta-field"><span>PORTIONS</span><input type="text" value="${esc(dish.portions)}" data-act="dish-portions"></div>
+        <div class="meta-field"><span>PRÉPARATION</span><input type="text" value="${esc(dish.prepTime)}" data-act="dish-preptime"></div>
+      </div>
+    </div>
+    <div class="ticket-body">
+      <h3>Ingrédients</h3>
+      <table class="ing-table"><tbody data-role="ing-body">
+        ${dish.ingredients.map(i=>ingredientRowHTML(dish.id,i)).join('')}
+      </tbody></table>
+      <button class="btn btn-ghost btn-sm" data-act="ing-add">+ Ajouter un ingrédient</button>
+
+      <h3 class="section-spacer">⚠ Allergènes (cliquez pour cocher/décocher)</h3>
+      <div class="allerg-grid" data-role="allerg-grid">${allergenChipsHTML(dish)}</div>
+
+      <h3 class="section-spacer">Notes du chef</h3>
+      <textarea data-act="dish-notes" placeholder="ex : ajout d'une touche de moutarde en cuisine...">${esc(dish.notes)}</textarea>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost btn-sm" data-act="copy-text" style="flex:1;">📋 Copier le texte (fonctionne même dans l'aperçu)</button>
+      </div>
+
+      <div class="export-group-label">📋 Fiche technique seule</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-word" data-mode="fiche">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-excel" data-mode="fiche">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-pdf" data-mode="fiche">🖨 PDF</button>
+      </div>
+
+      <div class="export-group-label">⚠ Allergènes seuls</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-word" data-mode="allergenes">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-excel" data-mode="allergenes">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-pdf" data-mode="allergenes">🖨 PDF</button>
+      </div>
+
+      <div class="export-group-label">📋⚠ Les deux ensemble</div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" data-act="export-word" data-mode="all">📝 Word</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-excel" data-mode="all">📊 Excel</button>
+        <button class="btn btn-ghost btn-sm" data-act="export-pdf" data-mode="all">🖨 PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDishList(){
+  const container = document.getElementById('dishList');
+  container.innerHTML = state.dishes.map((d,i)=>dishCardHTML(d,i)).join('');
+  renderEmptyState();
+  updateBulkBar();
+}
+
+function updateBulkBar(){
+  const bar = document.getElementById('bulkBar');
+  if(!state.dishes.length){ bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  document.getElementById('selCount').textContent = state.dishes.filter(d=>d.selected).length;
+}
+
+function findDish(id){ return state.dishes.find(d=>d.id===id); }
+
+/* event delegation for dish cards */
+document.getElementById('dishList').addEventListener('click', (e)=>{
+  const actEl = e.target.closest('[data-act]');
+  if(!actEl) return;
+  const card = e.target.closest('.ticket');
+  const dishId = card.dataset.dishId;
+  const dish = findDish(dishId);
+  const act = actEl.dataset.act;
+
+  if(act === 'delete-dish'){
+    state.dishes = state.dishes.filter(d=>d.id!==dishId);
+    renderDishList();
+  } else if(act === 'ing-add'){
+    dish.ingredients.push({id:uid(), name:'', qty:'', unit:''});
+    renderDishList();
+  } else if(act === 'ing-del'){
+    const row = e.target.closest('tr');
+    const ingId = row.dataset.ingId;
+    dish.ingredients = dish.ingredients.filter(i=>i.id!==ingId);
+    renderDishList();
+  } else if(act === 'allerg-toggle'){
+    const id = actEl.dataset.allerg;
+    dish.allergens[id] = !dish.allergens[id];
+    actEl.classList.toggle('on', dish.allergens[id]);
+  } else if(act === 'select-dish'){
+    dish.selected = actEl.checked;
+    updateBulkBar();
+  } else if(act === 'copy-text'){
+    copyDishText(dish);
+  } else if(act === 'export-word'){
+    exportWord(dish, actEl.dataset.mode);
+  } else if(act === 'export-excel'){
+    exportExcel(dish, actEl.dataset.mode);
+  } else if(act === 'export-pdf'){
+    exportPDF(dish, actEl.dataset.mode);
+  }
+});
+
+document.getElementById('dishList').addEventListener('input', (e)=>{
+  const actEl = e.target.closest('[data-act]');
+  if(!actEl) return;
+  const card = e.target.closest('.ticket');
+  const dish = findDish(card.dataset.dishId);
+  const act = actEl.dataset.act;
+  if(act === 'dish-name') dish.name = actEl.value;
+  else if(act === 'dish-portions') dish.portions = actEl.value;
+  else if(act === 'dish-preptime') dish.prepTime = actEl.value;
+  else if(act === 'dish-notes') dish.notes = actEl.value;
+  else if(act === 'ing-name' || act === 'ing-qty' || act === 'ing-unit'){
+    const row = e.target.closest('tr');
+    const ing = dish.ingredients.find(i=>i.id===row.dataset.ingId);
+    if(act==='ing-name') ing.name = actEl.value;
+    if(act==='ing-qty') ing.qty = actEl.value;
+    if(act==='ing-unit') ing.unit = actEl.value;
+  }
+  // keep tab number labels in sync without full re-render
+});
+
+/* ================= tabs ================= */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('tab-single').style.display = tab==='single' ? 'block' : 'none';
+    document.getElementById('tab-batch').style.display = tab==='batch' ? 'block' : 'none';
+    document.getElementById('tab-menu').style.display = tab==='menu' ? 'block' : 'none';
+  });
+});
+
+/* ================= single dish flow ================= */
+const analyzeDishBtn = document.getElementById('analyzeDishBtn');
+analyzeDishBtn.addEventListener('click', async ()=>{
+  const name = document.getElementById('dishNameInput').value.trim();
+  const ctx = document.getElementById('dishContextInput').value.trim();
+  if(!name){ toast('Indiquez le nom du plat.', 'error'); return; }
+  analyzeDishBtn.disabled = true;
+  analyzeDishBtn.innerHTML = '<span class="spinner"></span> Analyse en cours...';
+  try{
+    const dish = await analyzeDish(name, ctx);
+    state.dishes.unshift(dish);
+    renderDishList();
+    document.getElementById('dishNameInput').value = '';
+    document.getElementById('dishContextInput').value = '';
+    toast('Fiche générée — vérifiez et ajustez avant export.', 'success');
+  }catch(err){
+    toast(err.message, 'error');
+  }finally{
+    analyzeDishBtn.disabled = false;
+    analyzeDishBtn.textContent = 'Analyser le plat';
+  }
+});
+
+/* ================= batch text flow (multiple dishes typed at once) ================= */
+const analyzeBatchBtn = document.getElementById('analyzeBatchBtn');
+analyzeBatchBtn.addEventListener('click', async ()=>{
+  const raw = document.getElementById('batchDishesInput').value;
+  const names = raw.split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!names.length){ toast('Écrivez au moins un nom de plat (un par ligne).', 'error'); return; }
+  const wrap = document.getElementById('dishBatchProgressWrap');
+  const bar = document.getElementById('dishBatchProgressBar');
+  const text = document.getElementById('dishBatchProgressText');
+  wrap.style.display = 'block';
+  bar.style.width = '0%';
+  analyzeBatchBtn.disabled = true;
+  let done = 0;
+  for(const name of names){
+    text.textContent = `Génération : ${name} (${done+1}/${names.length})`;
+    try{
+      const dish = await analyzeDish(name, '');
+      state.dishes.unshift(dish);
+      renderDishList();
+    }catch(err){
+      toast(`Échec pour "${name}" : ${err.message}`, 'error');
+    }
+    done++;
+    bar.style.width = Math.round(done/names.length*100) + '%';
+  }
+  text.textContent = `Terminé — ${done}/${names.length} fiche(s) générée(s).`;
+  analyzeBatchBtn.disabled = false;
+  document.getElementById('batchDishesInput').value = '';
+  toast('Fiches générées pour la liste.', 'success');
+});
+
+/* ================= menu import flow ================= */
+const dropzone = document.getElementById('dropzone');
+const menuFileInput = document.getElementById('menuFileInput');
+const extractMenuBtn = document.getElementById('extractMenuBtn');
+let pendingFile = null;
+
+function handleFile(file){
+  pendingFile = file;
+  document.getElementById('fileNameLabel').textContent = '📎 ' + file.name;
+  extractMenuBtn.disabled = false;
+}
+menuFileInput.addEventListener('change', (e)=>{ if(e.target.files[0]) handleFile(e.target.files[0]); });
+['dragover','dragenter'].forEach(evt=> dropzone.addEventListener(evt, (e)=>{ e.preventDefault(); dropzone.classList.add('drag'); }));
+['dragleave','drop'].forEach(evt=> dropzone.addEventListener(evt, (e)=>{ e.preventDefault(); dropzone.classList.remove('drag'); }));
+dropzone.addEventListener('drop', (e)=>{ if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+extractMenuBtn.addEventListener('click', async ()=>{
+  if(!pendingFile) return;
+  extractMenuBtn.disabled = true;
+  extractMenuBtn.innerHTML = '<span class="spinner"></span> Lecture du fichier...';
+  try{
+    const rawText = await extractTextFromFile(pendingFile);
+    state.menuRawText = rawText;
+    if(!rawText || rawText.trim().length < 5){
+      throw new Error('Aucun texte exploitable trouvé dans ce fichier.');
+    }
+    extractMenuBtn.innerHTML = '<span class="spinner"></span> Identification des plats...';
+    const names = await extractDishNames(rawText);
+    if(!names.length){ throw new Error('Aucun plat détecté. Essayez un autre fichier.'); }
+    state.menuDishNames = names;
+    renderMenuList();
+    toast(names.length + ' plat(s) détecté(s).', 'success');
+  }catch(err){
+    toast(err.message, 'error');
+  }finally{
+    extractMenuBtn.disabled = false;
+    extractMenuBtn.textContent = 'Extraire les plats du menu';
+  }
+});
+
+function renderMenuList(){
+  const panel = document.getElementById('menuListPanel');
+  panel.style.display = 'block';
+  const list = document.getElementById('menuItemsList');
+  list.innerHTML = state.menuDishNames.map((name,i)=>`
+    <div class="menu-item">
+      <input type="checkbox" id="menu-item-${i}" checked data-idx="${i}">
+      <label for="menu-item-${i}">${esc(name)}</label>
+    </div>`).join('');
+}
+
+document.getElementById('selectAllBtn').addEventListener('click', ()=>{
+  const boxes = document.querySelectorAll('#menuItemsList input[type=checkbox]');
+  const allChecked = [...boxes].every(b=>b.checked);
+  boxes.forEach(b=> b.checked = !allChecked);
+});
+
+document.getElementById('generateSelectedBtn').addEventListener('click', async ()=>{
+  const boxes = [...document.querySelectorAll('#menuItemsList input[type=checkbox]:checked')];
+  if(!boxes.length){ toast('Sélectionnez au moins un plat.', 'error'); return; }
+  const names = boxes.map(b=> state.menuDishNames[+b.dataset.idx]);
+  const wrap = document.getElementById('batchProgressWrap');
+  const bar = document.getElementById('batchProgressBar');
+  const text = document.getElementById('batchProgressText');
+  wrap.style.display = 'block';
+  const genBtn = document.getElementById('generateSelectedBtn');
+  genBtn.disabled = true;
+  let done = 0;
+  for(const name of names){
+    text.textContent = `Génération : ${name} (${done+1}/${names.length})`;
+    try{
+      const dish = await analyzeDish(name, '');
+      state.dishes.push(dish);
+      renderDishList();
+    }catch(err){
+      toast(`Échec pour "${name}" : ${err.message}`, 'error');
+    }
+    done++;
+    bar.style.width = Math.round(done/names.length*100) + '%';
+  }
+  text.textContent = `Terminé — ${done}/${names.length} fiche(s) générée(s).`;
+  genBtn.disabled = false;
+  toast('Fiches du menu générées.', 'success');
+});
+
+/* ================= bulk selection ================= */
+document.getElementById('selectAllDishesBtn').addEventListener('click', ()=>{
+  const allSelected = state.dishes.length && state.dishes.every(d=>d.selected);
+  state.dishes.forEach(d=> d.selected = !allSelected);
+  renderDishList();
+});
+document.getElementById('deleteSelectedBtn').addEventListener('click', ()=>{
+  const count = state.dishes.filter(d=>d.selected).length;
+  if(!count){ toast('Sélectionnez au moins une fiche à supprimer.', 'error'); return; }
+  state.dishes = state.dishes.filter(d=>!d.selected);
+  renderDishList();
+  toast(count + ' fiche(s) supprimée(s).', 'success');
+});
+
+/* ================= batch export buttons ================= */
+document.getElementById('batchExportRow').addEventListener('click', (e)=>{
+  const actEl = e.target.closest('[data-act]');
+  if(!actEl) return;
+  const mode = actEl.dataset.mode || 'all';
+  if(actEl.dataset.act === 'export-all-word') exportAllWord(mode);
+  else if(actEl.dataset.act === 'export-all-excel') exportAllExcel(mode);
+  else if(actEl.dataset.act === 'export-all-pdf') exportAllPDF(mode);
+});
+
+/* ================= settings modal ================= */
+const settingsOverlay = document.getElementById('settingsOverlay');
+document.getElementById('settingsBtn').addEventListener('click', ()=>{
+  document.getElementById('apiKeyInput').value = state.apiKey;
+  settingsOverlay.classList.add('show');
+});
+document.getElementById('closeSettings').addEventListener('click', ()=> settingsOverlay.classList.remove('show'));
+settingsOverlay.addEventListener('click', (e)=>{ if(e.target===settingsOverlay) settingsOverlay.classList.remove('show'); });
+document.getElementById('saveSettingsBtn').addEventListener('click', ()=>{
+  state.apiKey = document.getElementById('apiKeyInput').value.trim();
+  localStorage.setItem('fichechef_api_key', state.apiKey);
+  settingsOverlay.classList.remove('show');
+  toast('Paramètres enregistrés.', 'success');
+});
+
+/* ================= init ================= */
+renderEmptyState();
+
+if('serviceWorker' in navigator){
+  try{
+    const swCode = "self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>new Response('',{status:200})));});";
+    const swBlob = new Blob([swCode], {type:'application/javascript'});
+    const swUrl = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swUrl).catch(()=>{});
+  }catch(e){ /* ignore — purely cosmetic for home-screen install */ }
+}
+</script>
+</body>
+</html>
